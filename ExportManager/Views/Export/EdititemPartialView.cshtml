@@ -17,6 +17,48 @@
 @Scripts.Render("~/bundles/jqueryval")
 @Scripts.Render("~/bundles/jqueryui")
 
+
+<script type="text/javascript" >
+
+    $(function () {
+
+
+        $("#mylink").on("click", function () {
+
+
+            $("#AddUserForm").dialog({
+
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 1000,
+                resizable: false,
+                title: 'Add User Form',
+                modal: true,
+                open: function () {
+                    var e = $("#mylink").data('id');
+                    alert(e);
+                    var link = '@Url.Action("itempartialView", "Export", new {exp_id=-1})';
+
+                    link = link.replace('-1', e);
+                    alert(link);
+                    $(this).load(link);
+                    //   $(this).load(@Url.Action());
+                },
+                buttons: {
+                    //"Add User": function () {
+                    //    addUserInfo();
+                    //},
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -25,7 +67,7 @@
 <body>
 
 
-    @using (Html.BeginForm("GetExpDetails", "Export", new { exp_id = Model.exp_id }))
+    @using (Html.BeginForm("Additem", "Export", new { exp_id = Model.exp_id }))
     {
 
       

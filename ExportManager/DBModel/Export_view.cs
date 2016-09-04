@@ -17,7 +17,7 @@ namespace ExportManager.DBModel
         public License lic_details { get; set; }
         public IEnumerable<Export> exp_country { get; set; }
         public IEnumerable<Export> exp_item { get; set; }
-        //public string search_str { get; set; }
+        public string msg { get; set; }
 
     }
 }
