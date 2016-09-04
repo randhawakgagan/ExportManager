@@ -1,0 +1,50 @@
+﻿@model ExportManager.DBModel.License
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>License</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.License_No)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.License_No)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Expiry_Date)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Expiry_Date)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Notes)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

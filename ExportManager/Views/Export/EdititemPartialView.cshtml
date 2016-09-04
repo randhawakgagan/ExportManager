@@ -1,0 +1,126 @@
+﻿
+@model ExportManager.DBModel.ViewExportAdd
+@{
+// Layout = null;
+}
+
+
+
+@*  <div id="editablePane">
+            @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
+            @Html.TextBoxFor(s => s.Height, new { @class = "myEditable", disabled = "disabled" })
+        </div>
+    }*@
+
+<!DOCTYPE html>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+
+
+    @using (Html.BeginForm("GetExpDetails", "Export", new { exp_id = Model.exp_id }))
+    {
+
+      
+    <div class="form-inline">
+                <div class="form-group">
+                    <label>Select Item</label>
+                    @Html.DropDownListFor(s => s.SelectedItems, Model.Items, "Select")
+                </div>
+                <div class="form-group">
+
+                </div>
+                <div class="form-group">
+
+                </div>
+                <div class="form-group">
+                    <label>Enter Units</label>
+                    @Html.EditorFor(s => s.No_Of_Units)
+                </div>
+
+
+                <div class="form-group">
+
+
+                    <input type="submit" value="ADD" id="itm_add" class="btn-success" />
+                    @*  @Html.ActionLink("ADD", "AddExportitem", new { exp_id = Model.exp_id, lic_id = Model.lic_id })*@
+
+                </div>
+            </div>
+       
+        
+
+
+  
+        if (Model.msg != null)
+        {
+            <div class="container">
+                <p class="alert-info">@Model.msg </p>
+            </div>
+        }
+
+        if (Model.exp_item != null)
+        {
+            <h3>ITEMS ADDED</h3>
+            <table class="table">
+                <tr>
+
+                    <th class="danger">Item_Name</th>
+                    <th class="warning">No_Units</th>
+                    <th class="danger">Unit Value</th>
+                    <th class="danger"></th>
+                    <th class="danger"></th>
+
+                </tr>
+
+                @foreach (var item in Model.exp_item)
+                {
+                    string selectedRow = "";
+
+                    selectedRow = "success";
+
+
+
+                    foreach (var exp_item in item.Export_Item)
+                    {
+                        <tr class="@selectedRow">
+                            <td>
+                                @exp_item.Item.Name
+
+                            </td>
+
+                            <td>
+                                @*@Html.EditorFor(m =>m.No_Of_Units, new { htmlAttributes = new {id="no_units" } })*@
+
+                                @exp_item.No_Of_Units
+
+                            </td>
+                            <td>
+                                @exp_item.Item.Unit_Value
+
+                            </td>
+                            @*<td>
+
+        @Html.ActionLink("Update", "UpdateExportitem", new { item_id = exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id }, new { id = "update" })
+    </td>*@
+                            <td>
+                                @Html.ActionLink("Delete", "DeleteExportitem", new { exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id })
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </table>
+
+        }
+
+    }
+</body>
+</html>              

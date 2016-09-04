@@ -1,0 +1,214 @@
+﻿@model   ExportManager.DBModel.Viewlicensecountryitem
+
+@{
+   // Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create", "LicenseAdd")
+    </p>
+
+   @* <style>
+        .jumbotron {
+            background-color: antiquewhite;
+        }
+    </style>
+*@
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th class="active">License_No</th>
+                <th class="info">Expiry_Date</th>
+                <th class="warning">Notes</th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Licenses)
+            {
+
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.License_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Expiry_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+
+
+                    <td>
+                        @Html.ActionLink("Show Items", "Index", new { lic_id = item.Id })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Show Country_list", "Index", new { item_id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+        </div>
+
+
+        @if (Model.License_item != null)
+        {
+
+            <div class="jumbotron">
+                <div class="container">
+                    <h3>Items of Selected License</h3>
+                    <table class="table">
+                        <tr>
+                            <th class="warning">Item_Name</th>
+                            <th class="success">No_Units</th>
+                            <th class="active">Unit_value</th>
+                            <th></th>
+
+                        </tr>
+
+                        @foreach (var item in Model.License_item)
+                        {
+                            string selectedRow = "";
+                            if (item.Id == ViewBag.t_id)
+                            {
+                                selectedRow = "success";
+                            }
+
+                           
+                                foreach (var exp_item in item.License_Item)
+                                {
+                                   <tr class="@selectedRow">
+                                    <td>
+                                        @exp_item.Item.Name
+
+                                    </td>
+
+                                    <td>
+                                        @exp_item.No_Units
+
+                                    </td>
+                                    <td>
+                                        @exp_item.Item.Unit_Value
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+
+
+
+
+                    </table>
+                </div>
+            </div>
+        }
+
+
+
+        @if (Model.License_country != null)
+        {
+            <h3>Country of Selected License</h3>
+            <div class="container">
+
+                <table class="table">
+                    <tr>
+                        <th class="warning">County_Name</th>
+                        <th class="info">Country Id</th>
+                        <th></th>
+
+                    </tr>
+
+                    @foreach (var item in Model.License_country)
+                {
+                    foreach (var exp_item in item.License_Country)
+                    {
+                            <tr>
+                                <td>
+                                    @exp_item.Country.Name
+
+                                </td>
+
+                                <td>
+                                    @exp_item.Country_Id
+
+                                </td>
+
+                            </tr>
+                        }
+
+
+
+                    }
+
+                </table>
+            </div>
+
+        }
+
+        @*
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayName("license_no")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Expiry_Date")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Notes")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("Items")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Countries")
+                    </th>
+                </tr>
+
+
+
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.allLicense.License_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.allLicense.Expiry_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.allLicense.Notes)
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelitem => item.allCountry)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelitem => item.allItems)
+                    </td>
+
+                </tr>
+            }
+            </table>
+
+
+        *@
+</body>
+
+</html>

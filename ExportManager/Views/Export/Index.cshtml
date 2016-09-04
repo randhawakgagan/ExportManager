@@ -1,0 +1,228 @@
+﻿@model ExportManager.DBModel.ViewExportAdd
+@{
+// Layout = null;
+}
+
+
+
+  @*  <div id="editablePane">
+            @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
+            @Html.TextBoxFor(s => s.Height, new { @class = "myEditable", disabled = "disabled" })
+        </div>
+    }*@
+
+        <!DOCTYPE html>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+
+
+<script type="text/javascript">
+    $(function () {
+
+      /*  $("#lic_create").click()
+        {
+            $("#item_data").show();
+        }*/
+
+        $("#Export_Date").change(function () {
+
+            $("#lic_create").prop('disabled', false);
+          alert("m here");
+          var exp = $(this).val();
+        
+          var lic = $("#expiry_date").val();
+        //  var year = exp.getFullYear();
+
+          alert(exp);
+         
+          alert(lic);
+        //  var date = new Date(exp);
+         //  var dateString = lic.substring(6);
+          var currentTime = new Date(exp);
+           var month = currentTime.getMonth() + 1;
+           var day = currentTime.getDate()+1;
+            var year = currentTime.getFullYear();
+            var date = month + "/" + day + "/" + year;
+        alert(date);
+        if (date > lic) {
+            alert("License expired, Please choose date <="+ lic);
+            $("#Export_Date").html("");
+            $("#lic_create").prop('disabled', true);
+
+        }
+        });
+     $("#Selectedlicense").change(function () {
+
+            var t = $(this).val();
+
+            if (t !== "") {
+
+              // alert("@Url.Action("GetItemsCountry", "Export")?val=" + t);
+                $.post("@Url.Action("GetItemsCountry", "Export")?val=" + t,
+
+
+                    function (res) {
+                     //   alert(res);
+                    if (true)
+                    {
+                       // alert(res.items);
+                    //    var valueAdded = '<option value="Select"> </option>';
+                      //  $("#SelectedItems").html("");
+                        //$("#Items").empty();
+                    //    $("#Items").append(valueAdded);
+                        //$("#Selectedcountrylist").empty();
+                        //$.each(res.items, function (i, item) {
+                         //   alert(item.item_name);
+                          //  var valueToBeAdded = '<option value="' + item.item_id + '">' +
+                            //     item.item_name + '</option>';
+
+                         //   alert(valueToBeAdded);
+                            //$("#SelectedItems").append(valueToBeAdded);
+                            // here we are adding option for States
+
+                        //});
+                        $.each(res.country_list, function (i, country) {
+                            //   alert(item.item_name);
+                            var valueToBeAdded = '<option value="' + country.country_id + '">' +
+                                 country.country_name + '</option>';
+
+                            //   alert(valueToBeAdded);
+                            $("#Selectedcountrylist").append(valueToBeAdded);
+                            // here we are adding option for States
+
+                        });
+                        $.each(res.licdetails, function (i, lic) {
+                            //  $.parseJSON(lic.expiry_date);
+                            var dateString = lic.expiry_date.substr(6);
+                            var currentTime = new Date(parseInt(dateString));
+                            var month = currentTime.getMonth() + 1;
+                            var day = currentTime.getDate();
+                            var year = currentTime.getFullYear();
+                            var date = month + "/" + day + "/" + year;
+                            //var new_date=new Date(lic.expiry_date.match(/\d+/)[0] * 1);
+                         
+                            $('#expiry_date').val(date);
+                          //  alert($('#expiry_date').val());
+                           // $('#expiry_date').val(lic.expiry_date);
+
+                          //  $("#notes").val(lic.notes);
+                        });
+                        //   
+                       // $("#notes").html(res.licdetails.notes);
+                       // $("#notes").text(res.licdetails.notes);
+
+                        //LicenseDetails_Notes.SetHtml(res.licdetails.notes);
+                      //enable the text boxes and set the value
+
+                     //   $("#Width").prop('disabled', false).val(res.Data.Width);
+                       // $("#Height").prop('disabled', false).val(res.Data.Height);
+
+                    } else {
+                        alert("Error getting data!");
+                    }
+                });
+            } else {
+                alert("done!");
+                //Let's clear the values and disable :)
+               // $("input.editableItems").val('').prop('disabled', true);
+            }
+
+        });
+ });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width" />
+            <title>Index</title>
+        </head>
+        <body>
+
+           @using (Html.BeginForm("Create", "Export",FormMethod.Post))
+           {
+          
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Export</h4>
+                <hr />
+                <div class="table">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Select License</label>
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(s => s.Selectedlicense, Model.LicenseNos, "Select")
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Country_list</label>
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(s => s.Selectedcountrylist, new SelectList(string.Empty, "Value", "Text"), "Select")
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Export.Reference_No, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Export.Reference_No, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Export.Reference_No, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                      <div class="form-group">
+                        @Html.LabelFor(model => model.Export.Export_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+
+                            @Html.EditorFor(model => model.Export.Export_Date, new { htmlAttributes = new { @class = "form-control" ,id="Export_Date" } })
+
+                            @Html.ValidationMessageFor(model => model.Export.Export_Date, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LicenseDetails.Expiry_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+
+                            @Html.EditorFor(model => model.LicenseDetails.Expiry_Date, new { htmlAttributes = new { @class = "form-control", id = "expiry_date" } })
+
+                            @Html.ValidationMessageFor(model => model.LicenseDetails.Expiry_Date, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input  type="submit" id="lic_create" value="Export Items"
+                                   class="btn-primary"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           }
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        
+         
+
+           
+
+        </body>
+        </html>

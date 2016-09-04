@@ -1,0 +1,189 @@
+﻿@model ExportManager.DBModel.Export_view
+   
+@{
+// Layout = null;
+}
+
+
+
+@*  <div id="editablePane">
+            @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
+            @Html.TextBoxFor(s => s.Height, new { @class = "myEditable", disabled = "disabled" })
+        </div>
+    }*@
+
+<!DOCTYPE html>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+
+    <div>
+        <p class="control-label">
+            @Html.ActionLink("Export New", "Index")
+
+        </p>
+    </div>
+
+
+    <form method="get" class="form-group">
+        <input type="search" name="searchterm"/>
+        <input type="submit" class ="btn-primary" value="Search by Ref. No "/>
+    </form>
+
+    <div>
+        Page @(Model.exports.PageCount < Model.exports.PageNumber ? 0 : Model.exports.PageNumber) of @Model.exports.PageCount
+
+        @Html.PagedListPager(Model.exports, page => Url.Action("Details", new { page = page }))
+
+    </div>
+
+    <table class="table">
+        <tr>
+            <th class="danger">Reference_No</th>
+            <th class="warning">License_No</th>
+            <th class="active">Export_Date</th>
+            <th class="warning">country</th>
+
+            <th  class="warning"></th>
+        </tr>
+
+
+        @foreach (var item in Model.exports)
+        {
+            string selectedRow = "";
+            string ref_no = item.Reference_No;
+            if (item.Id == ViewBag.t_id)
+            {
+                selectedRow = "success";
+
+            }
+
+            <tr class="@selectedRow">
+
+                
+
+                <td>
+                    @Html.ActionLink(ref_no, "GetExpDetails", new { exp_id = item.Id })
+                    @*@Html.DisplayFor(modelItem => item.Reference_No)*@
+                </td>
+                <td>
+
+                    @Html.DisplayFor(modelItem => item.License.License_No)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Export_Date)
+                </td>
+
+
+                <td>
+                    @{
+                        foreach (var course in item.Export_Country)
+                        {
+                            @course.Country_Id @:  @course.Country.Name <br />
+                    }
+                    }
+                </td>
+
+                @*<td>
+                    @Html.ActionLink("Show Items", "Details", new { exp_id = item.Id })
+                </td>*@
+                @*<td>
+                    <a type="button" class="btn mylink"
+                       href="#article-editor"
+                       data-toggle="modal"
+                       data-id="@item.Id">edit</a>
+                </td>
+
+                <td>
+                    <a type="button" id="mylink"
+                       href="#my"
+                       data-toggle="modal"
+                       data-id="@item.Id">edit</a>
+                </td>*@
+            </tr>
+                        }
+
+    </table>
+
+    @if (Model.exp_item != null)
+    {
+        <div class="container">
+            <h3>Items of Selected Export</h3>
+            <table class="table">
+                <tr>
+                    <th class="danger">Item_Name</th>
+                    <th class="active">No_Units</th>
+                    <th class="warning">Unit_value</th>
+                    <th></th>
+
+                </tr>
+
+                @foreach (var item in Model.exp_item)
+                {
+                    string selectedRow = "";
+                    if (item.Id == ViewBag.t_id)
+                    {
+                        selectedRow = "success";
+                    }
+
+
+
+                    foreach (var exp_item in item.Export_Item)
+                    {
+                        <tr class="@selectedRow">
+
+                            <td>
+                                @exp_item.Item.Name
+
+                            </td>
+
+                            <td>
+                                @exp_item.No_Of_Units
+
+                            </td>
+                            <td>
+                                @exp_item.Item.Unit_Value
+
+                            </td>
+
+                            @*<td>
+                                @Html.ActionLink("Show Items", "Details", new { exp_id = item.Id, item_id = item.Id })
+                            </td>*@
+
+                        </tr>
+                    }
+                }
+
+
+
+
+            </table>
+            </div>
+
+       
+    }
+    
+          
+
+</body>
+</html>

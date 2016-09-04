@@ -1,0 +1,370 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LicenseManagerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogin">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+    <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Export_Country" Relationship="Self.FK_ExportCountry_ToTable" FromRole="Country" ToRole="Export_Country" />
+    <NavigationProperty Name="License_Country" Relationship="Self.FK_LicenseCountry_ToTable" FromRole="Country" ToRole="License_Country" />
+  </EntityType>
+  <EntityType Name="Export">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Reference_No" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Export_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Export_Country" Relationship="Self.FK_ExportCountry_ToTable_1" FromRole="Export" ToRole="Export_Country" />
+    <NavigationProperty Name="Export_Item" Relationship="Self.FK_ExportItems_ToTable" FromRole="Export" ToRole="Export_Item" />
+    <Property Name="License_Id" Type="Int32" />
+    <NavigationProperty Name="License" Relationship="LicenseManagerModel.FK_Export_ToTable" FromRole="Export" ToRole="License" />
+  </EntityType>
+  <EntityType Name="Export_Country">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Export_Id" Type="Int32" Nullable="false" />
+    <Property Name="Country_Id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Country" Relationship="Self.FK_ExportCountry_ToTable" FromRole="Export_Country" ToRole="Country" />
+    <NavigationProperty Name="Export" Relationship="Self.FK_ExportCountry_ToTable_1" FromRole="Export_Country" ToRole="Export" />
+  </EntityType>
+  <EntityType Name="Export_Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Exporter_Id" Type="Int32" Nullable="false" />
+    <Property Name="Item_Id" Type="Int32" Nullable="false" />
+    <Property Name="No_Of_Units" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Export" Relationship="Self.FK_ExportItems_ToTable" FromRole="Export_Item" ToRole="Export" />
+    <NavigationProperty Name="Item" Relationship="Self.FK_ExportItems_ToTable_1" FromRole="Export_Item" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Unit_Value" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <NavigationProperty Name="Export_Item" Relationship="Self.FK_ExportItems_ToTable_1" FromRole="Item" ToRole="Export_Item" />
+    <NavigationProperty Name="License_Item" Relationship="Self.FK_LicenseItem_ToTable_1" FromRole="Item" ToRole="License_Item" />
+  </EntityType>
+  <EntityType Name="License">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="License_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Expiry_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="License_Country" Relationship="Self.FK_LicenseCountry_ToTable_1" FromRole="License" ToRole="License_Country" />
+    <NavigationProperty Name="License_Item" Relationship="Self.FK_LicenseItem_ToTable" FromRole="License" ToRole="License_Item" />
+    <NavigationProperty Name="Exports" Relationship="LicenseManagerModel.FK_Export_ToTable" FromRole="License" ToRole="Export" />
+  </EntityType>
+  <EntityType Name="License_Country">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="License_Id" Type="Int32" Nullable="false" />
+    <Property Name="Country_Id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Country" Relationship="Self.FK_LicenseCountry_ToTable" FromRole="License_Country" ToRole="Country" />
+    <NavigationProperty Name="License" Relationship="Self.FK_LicenseCountry_ToTable_1" FromRole="License_Country" ToRole="License" />
+  </EntityType>
+  <EntityType Name="License_Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="License_Id" Type="Int32" Nullable="false" />
+    <Property Name="Item_Id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Item" Relationship="Self.FK_LicenseItem_ToTable_1" FromRole="License_Item" ToRole="Item" />
+    <NavigationProperty Name="License" Relationship="Self.FK_LicenseItem_ToTable" FromRole="License_Item" ToRole="License" />
+    <Property Name="No_Units" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Notify">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="License_Id" Type="Int32" Nullable="false" />
+    <Property Name="Email_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaims">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogins">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExportCountry_ToTable">
+    <End Role="Country" Type="Self.Country" Multiplicity="1" />
+    <End Role="Export_Country" Type="Self.Export_Country" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Export_Country">
+        <PropertyRef Name="Country_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LicenseCountry_ToTable">
+    <End Role="Country" Type="Self.Country" Multiplicity="1" />
+    <End Role="License_Country" Type="Self.License_Country" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="License_Country">
+        <PropertyRef Name="Country_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExportCountry_ToTable_1">
+    <End Role="Export" Type="Self.Export" Multiplicity="1" />
+    <End Role="Export_Country" Type="Self.Export_Country" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Export">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Export_Country">
+        <PropertyRef Name="Export_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExportItems_ToTable">
+    <End Role="Export" Type="Self.Export" Multiplicity="1" />
+    <End Role="Export_Item" Type="Self.Export_Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Export">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Export_Item">
+        <PropertyRef Name="Exporter_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExportItems_ToTable_1">
+    <End Role="Item" Type="Self.Item" Multiplicity="1" />
+    <End Role="Export_Item" Type="Self.Export_Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Export_Item">
+        <PropertyRef Name="Item_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LicenseItem_ToTable_1">
+    <End Role="Item" Type="Self.Item" Multiplicity="1" />
+    <End Role="License_Item" Type="Self.License_Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="License_Item">
+        <PropertyRef Name="Item_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LicenseCountry_ToTable_1">
+    <End Role="License" Type="Self.License" Multiplicity="1" />
+    <End Role="License_Country" Type="Self.License_Country" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="License">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="License_Country">
+        <PropertyRef Name="License_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LicenseItem_ToTable">
+    <End Role="License" Type="Self.License" Multiplicity="1" />
+    <End Role="License_Item" Type="Self.License_Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="License">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="License_Item">
+        <PropertyRef Name="License_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="LicenseManagerEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+    <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+    <EntitySet Name="Countries" EntityType="Self.Country" />
+    <EntitySet Name="Exports" EntityType="Self.Export" />
+    <EntitySet Name="Export_Country" EntityType="Self.Export_Country" />
+    <EntitySet Name="Export_Item" EntityType="Self.Export_Item" />
+    <EntitySet Name="Items" EntityType="Self.Item" />
+    <EntitySet Name="Licenses" EntityType="Self.License" />
+    <EntitySet Name="License_Country" EntityType="Self.License_Country" />
+    <EntitySet Name="License_Item" EntityType="Self.License_Item" />
+    <EntitySet Name="Notifies" EntityType="Self.Notify" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExportCountry_ToTable" Association="Self.FK_ExportCountry_ToTable">
+      <End Role="Country" EntitySet="Countries" />
+      <End Role="Export_Country" EntitySet="Export_Country" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LicenseCountry_ToTable" Association="Self.FK_LicenseCountry_ToTable">
+      <End Role="Country" EntitySet="Countries" />
+      <End Role="License_Country" EntitySet="License_Country" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExportCountry_ToTable_1" Association="Self.FK_ExportCountry_ToTable_1">
+      <End Role="Export" EntitySet="Exports" />
+      <End Role="Export_Country" EntitySet="Export_Country" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExportItems_ToTable" Association="Self.FK_ExportItems_ToTable">
+      <End Role="Export" EntitySet="Exports" />
+      <End Role="Export_Item" EntitySet="Export_Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExportItems_ToTable_1" Association="Self.FK_ExportItems_ToTable_1">
+      <End Role="Item" EntitySet="Items" />
+      <End Role="Export_Item" EntitySet="Export_Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LicenseItem_ToTable_1" Association="Self.FK_LicenseItem_ToTable_1">
+      <End Role="Item" EntitySet="Items" />
+      <End Role="License_Item" EntitySet="License_Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LicenseCountry_ToTable_1" Association="Self.FK_LicenseCountry_ToTable_1">
+      <End Role="License" EntitySet="Licenses" />
+      <End Role="License_Country" EntitySet="License_Country" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LicenseItem_ToTable" Association="Self.FK_LicenseItem_ToTable">
+      <End Role="License" EntitySet="Licenses" />
+      <End Role="License_Item" EntitySet="License_Item" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+      <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Export_ToTable" Association="LicenseManagerModel.FK_Export_ToTable">
+      <End Role="License" EntitySet="Licenses" />
+      <End Role="Export" EntitySet="Exports" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_Export_ToTable">
+    <End Type="LicenseManagerModel.License" Role="License" Multiplicity="0..1" />
+    <End Type="LicenseManagerModel.Export" Role="Export" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="License">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Export">
+        <PropertyRef Name="License_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

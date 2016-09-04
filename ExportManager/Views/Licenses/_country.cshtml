@@ -1,0 +1,16 @@
+﻿@model ExportManager.DBModel.Country
+<div class="form-group">
+    <label class="control-label col-md-2">Country_list</label>
+    <div class="col-md-10">
+
+        @*@Html.DropDownListFor(m => m.Id, (SelectList)ViewBag.Country_list, " ", new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.Id, (MultiSelectList)ViewBag.Country_list, " ", new { @class = "form-control" })
+
+
+
+             @Html.DropDownListFor(m => m.Id, (MultiSelectList)ViewBag.Country_list, " ", new {multiple = "multiple" })*@
+
+
+        @Html.ListBox("Name", (MultiSelectList)ViewBag.Country_list)
+    </div>
+</div>

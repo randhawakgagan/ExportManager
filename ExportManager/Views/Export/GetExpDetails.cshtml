@@ -1,0 +1,312 @@
+﻿@model ExportManager.DBModel.Export_view
+
+@{
+// Layout = null;
+}
+
+
+
+@*  <div id="editablePane">
+            @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
+            @Html.TextBoxFor(s => s.Height, new { @class = "myEditable", disabled = "disabled" })
+        </div>
+    }*@
+
+<!DOCTYPE html>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+
+
+
+
+
+<script type="text/javascript">
+
+
+    //$(function () {
+    //    $.ajaxSetup({ cache: false });
+    //    $("a[data-modal]").on("click", function (e) {
+    //        $('#myModalContent').load(this.href, function () {
+    //            $('#myModal').modal('show');
+    //        });
+    //        return false;
+    //    });
+    //});
+    $(function () {
+
+
+        $("#mylink").on("click", function () {
+
+
+            $("#AddUserForm").dialog({
+
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 1000,
+                resizable: false,
+                title: 'Add User Form',
+                modal: true,
+                open: function () {
+                    var e = $("#mylink").data('id');
+                    alert(e);
+                    var link = '@Url.Action("itempartialView", "Export", new {exp_id=-1})';
+                    
+                    link = link.replace('-1', e);
+                    alert(link);
+                    $(this).load(link);
+                    @*$(this).load(@Url.Action());*@
+                },
+                buttons: {
+                    //"Add User": function () {
+                    //    addUserInfo();
+                    //},
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+    });
+        @*$(".btn.mylink").on("click", function () {
+            var expId = $(this).data('id');
+            $.post("@Url.Action("GetExpDetails", "Export")?val=" + expId, function (res) {
+                $.each(res.detail, function (i, exp) {
+                    $("#ref_no").val(exp.ref_no);
+                  //  alert(exp.exp_date);
+                    // $("#export_date").val(exp.exp_date);
+                    var dateString = exp.exp_date.substr(6);
+                    var currentTime = new Date(parseInt(dateString));
+                    var month = currentTime.getMonth() + 1;
+                    var day = currentTime.getDate();
+                    var year = currentTime.getFullYear();
+                    var date = month + "/" + day + "/" + year;
+                    $("#export_date").attr('value', date);
+
+                    var dateString1 = exp.lic_date.substr(6);
+                    var currentTime1 = new Date(parseInt(dateString1));
+                    var month1 = currentTime1.getMonth() + 1;
+                    var day1 = currentTime1.getDate();
+                    var year1 = currentTime1.getFullYear();
+                    var date1 = month1 + "/" + day1 + "/" + year1;
+                    $("#expiry_date").val(date1);
+                    $("#expiry_date").prop('disabled',true);
+                    $("#lic_no").val(exp.lic_no);
+                    $("#lic_no").prop('disabled', true);
+                    //$("#").val(data.Year.toString() + "-" +
+                    //                   ("00" + data.Month.toString()).slice(-2));
+
+
+
+                });
+
+
+                var row = "";
+                $.each(res.items, function (i, item) {
+                    row += "<tr><td>" + item.item_name + "</td><td>" + item.units + "</td></tr>";
+                });
+                $("#contacts").html(row);
+                //$.each(res.items, function (i, item) {
+                //    var user = '<tr class="success">' +'<td>' + item.item_name + '</td>' + '<td>'+ item.units + '</td>' +
+                //   " <a type="button" class="btn mylink" href="#article-editor"
+                //    data-toggle="modal"
+                //    data-id= '+item.id+'>edit</a>" +'</tr>';
+
+                //    $('#items_table').append(user);
+                //});
+            });
+        });
+
+
+        $("#item_edit").on('click', function () {
+
+            $("#AddUserForm").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 1000,
+                resizable: false,
+                title: 'Add User Form',
+                modal: true,
+                open: function () {
+                    var exid = $(".btn.mylink").data('id');
+                    $(this).load('@Url.Action("itempartialView", "Export")');
+                },
+                buttons: {
+                    //"Add User": function () {
+                    //    addUserInfo();
+                    //},
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+    });*@
+</script>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ExportEdit</title>
+</head>
+<body>
+    <div id="my"></div>
+    @using (Html.BeginForm("articles", "editor", FormMethod.Post, new { id = "span" }))
+    {
+        @*<div class="modal fade in" id="article-editor">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h3>Title of the form</h3>
+                    </div>
+
+
+                    <div class="modal-body">*@
+
+                        <div class="form-horizontal">
+                            <h4>Export</h4>
+                            <hr />
+                            <div class="table">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.export_val.Reference_No, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.export_val.Reference_No, new { htmlAttributes = new { @class = "form-control", id = "ref_no" } })
+                                        @Html.ValidationMessageFor(model => model.export_val.Reference_No, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.export_val.Export_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+
+                                        @Html.EditorFor(model => model.export_val.Export_Date, new { htmlAttributes = new { @class = "form-control", id = "export_date" } })
+
+                                        @Html.ValidationMessageFor(model => model.export_val.Export_Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.export_val.License.Expiry_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+
+                                        @Html.EditorFor(model => model.export_val.License.Expiry_Date, new { htmlAttributes = new { @class = "form-control", id = "expiry_date", disabled=true } })
+
+                                        @Html.ValidationMessageFor(model => model.export_val.License.Expiry_Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.export_val.License.License_No, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+
+                                        @Html.EditorFor(model => model.export_val.License.License_No, new { htmlAttributes = new { @class = "form-control", id = "lic_no" } })
+
+                                        @Html.ValidationMessageFor(model => model.export_val.License.License_No, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                <div id="AddUserForm"></div>
+                                <a type="button" id="mylink"
+                                   href="#my"
+                                   data-toggle="modal"
+                                   data-id="@Model.export_val.Id">edit</a>
+
+                                @Html.ActionLink("Add items", "itempartialView", new { exp_id = Model.export_val.Id }, new { data_modal = "" })
+
+                                <!-- modal placeholder-->
+                                <div id='myModal' class='modal fade in'>
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div id='myModalContent'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (Model.exp_item != null)
+                                {
+                                <h3>ITEMS ADDED</h3>
+                                <table class="table table-striped table-hover table-bordered">
+                                    <thead>
+
+                                        <tr>
+
+                                            <th class="danger">Item_Name</th>
+                                            <th class="warning">No_Units</th>
+                                            <th class="danger">Unit Value</th>
+                                            @*<th class="danger"></th>*@
+
+
+                                        </tr>
+                                    </thead>
+
+
+
+
+                                    <tbody id="contacts">
+                                        @foreach (var item in Model.exp_item)
+                                        {
+                                            string selectedRow = "";
+
+                                            selectedRow = "success";
+
+
+
+                                            foreach (var exp_item in item.Export_Item)
+                                            {
+
+                                                <tr class="@selectedRow">
+                                                    <td>
+                                                        @exp_item.Item.Name
+
+                                                    </td>
+
+                                                    <td>
+                                                        @*@Html.EditorFor(m =>m.No_Of_Units, new { htmlAttributes = new {id="no_units" } })*@
+
+                                                        @exp_item.No_Of_Units
+
+                                                    </td>
+                                                    <td>
+                                                        @exp_item.Item.Unit_Value
+
+                                                    </td>
+                                                    @*<td>
+
+                                                        @Html.ActionLink("Update", "UpdateExportitem", new { item_id = exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id }, new { id = "update" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Delete", "DeleteExportitem", new { exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id })
+                                                    </td>*@
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                             </table>
+
+    }
+
+
+
+                                                   <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" id="exp_edit" value="Save"
+                                                   class="btn-primary" />
+                                        </div>
+                                    </div>
+                          </div>
+                        </div>
+                    @*</div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn" data-dismiss="modal">Close</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    }
+</body>
+</html>
