@@ -50,7 +50,7 @@ namespace ExportManager.Controllers
             return PartialView("EdititemPartialView", model);
         }
 
-        public ActionResult GetExpDetails(int? exp_id)
+        public ActionResult GetExpDetails(int? exp_id,string msg)
         {
 
             var exp_detail = from l in db.Exports
@@ -66,7 +66,7 @@ namespace ExportManager.Controllers
             //model.exports = db.Exports.Where(r => searchterm == null || r.Reference_No.StartsWith(searchterm)).Include(k => k.License).
             //     Include(i => i.Export_Country.Select(z => z.Country)).Include(y => y.Export_Item.Select(p => p.Item)).OrderBy(u => u.Reference_No).ToPagedList(page, 4);
 
-
+            model.msg = msg;
             model.export_val = db.Exports.Where(x => x.Id == exp_id.Value).Include(z => z.License).Single();
             ////model.exports = db.Exports.Where(r => searchterm == null || r.Reference_No.StartsWith(searchterm)).
             ////Include(i => i.);
@@ -274,7 +274,81 @@ namespace ExportManager.Controllers
         }
 
 
-       [HttpPost]
+        public ActionResult Additem(int? exp_id, ViewExportAdd exportvalues)
+        {
+            // int exp_id = Convert.ToInt32(TempData["id"]);
+            TempData["id"] = exp_id.Value;
+            ViewExportAdd model = new ViewExportAdd();
+            Export_view view = new Export_view();
+            model.exp_item = db.Exports.Where(z => z.Id == exp_id.Value).Include(x => x.Export_Item.Select(y => y.Item));
+            var lic_id = db.Exports.Where(z => z.Id == exp_id.Value).Include(x => x.License).Single();
+            if (exportvalues.SelectedItems != null)
+            {
+                foreach (var i in exportvalues.SelectedItems)
+                {
+                    var items_add = new Export_Item();
+                    var item_found = from itm in db.Export_Item where itm.Item_Id == i && itm.Exporter_Id == exp_id.Value select itm;
+
+                    if (item_found.Any())
+                    {
+                        var item_name = from itm in db.Items where itm.Id == i select itm.Name;
+                        model.msg = "Item - " + item_name.FirstOrDefault() + "-already added ,please choose different one ";
+                        view.msg = model.msg;
+                        return RedirectToAction("GetExpDetails",new { exp_id = exp_id.Value, msg = model.msg });
+
+                        
+                    }
+                    var units_allowed = from itm in db.License_Item where itm.Item_Id == i select itm.No_Units;
+
+
+                    if (Convert.ToInt32(
+                        units_allowed.FirstOrDefault()) < exportvalues.No_Of_Units)
+                    {
+                        model.msg = "no of units can't  exceed than" + Convert.ToInt32(
+                        units_allowed.FirstOrDefault());
+                        view.msg = model.msg;
+                        return RedirectToAction("GetExpDetails", new { exp_id = exp_id.Value, msg = model.msg });
+                    }
+
+                    else
+                    {
+                        items_add.Item_Id = i;
+                        items_add.No_Of_Units = exportvalues.No_Of_Units;
+                        items_add.Exporter_Id = exp_id.Value;
+                        db.Export_Item.Add(items_add);
+                        db.SaveChanges();
+                    }
+                }
+
+            }
+            var item_list =
+              from itm in db.Items
+              join lic in db.License_Item on itm.Id equals lic.Item_Id
+              where lic.License_Id == lic_id.License_Id
+              select itm;
+
+            model.lic_id = lic_id.License_Id.Value;
+            model.exp_id = exp_id.Value;
+            //  model.Items= new SelectListItem(item_list.ToList(), "Id", "Name")
+
+            model.Items =
+             item_list.Select(x => new SelectListItem
+             {
+                 Value = x.Id.ToString(),
+                 Text = x.Name,
+             })
+             .ToList();
+
+            model.SelectedItems = db.Items.Select(x => x.Id);
+
+
+            // db.SaveChanges();
+            //return PartialView("EdititemPartialView", model);
+            // return View(model);
+            return RedirectToAction("GetExpDetails", new { exp_id = exp_id.Value, msg = "item added" });
+            //  return Json(new { lic_i
+        }
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ViewExportAdd exportvalues)
         {

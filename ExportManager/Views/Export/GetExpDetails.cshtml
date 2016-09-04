@@ -33,6 +33,9 @@
     //        return false;
     //    });
     //});
+
+   
+
     $(function () {
 
 
@@ -51,12 +54,12 @@
                     var e = $("#mylink").data('id');
                     alert(e);
                     var link = '@Url.Action("itempartialView", "Export", new {exp_id=-1})';
-                    
+
                     link = link.replace('-1', e);
                     alert(link);
                     $(this).load(link);
-                    @*$(this).load(@Url.Action());*@
-                },
+                 //   $(this).load(@Url.Action());
+      },
                 buttons: {
                     //"Add User": function () {
                     //    addUserInfo();
@@ -214,8 +217,16 @@
                                    data-toggle="modal"
                                    data-id="@Model.export_val.Id">edit</a>
 
-                                @Html.ActionLink("Add items", "itempartialView", new { exp_id = Model.export_val.Id }, new { data_modal = "" })
+                                <a type="button" id="modal_add"
+                                   href="#items"
+                                   data-toggle="modal"
+                                   data-id="@Model.export_val.Id">ADD</a>
 
+                              
+
+                                @Html.ActionLink("Add items", "itempartialView", new { exp_id = Model.export_val.Id }, new { id = "linkId" })
+                                <p class="container">@Model.msg
+                                </p>
                                 <!-- modal placeholder-->
                                 <div id='myModal' class='modal fade in'>
                                     <div class="modal-dialog">
@@ -287,6 +298,7 @@
                              </table>
 
     }
+
 
 
 
