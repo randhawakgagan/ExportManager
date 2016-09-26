@@ -8,8 +8,10 @@ using System.Web;
 using System.Web.Mvc;
 using ExportManager.DBModel;
 
+
 namespace ExportManager.Controllers
 {
+    [Authorize]
     public class CountriesController : Controller
     {
         private LicenseManagerEntities db = new LicenseManagerEntities();

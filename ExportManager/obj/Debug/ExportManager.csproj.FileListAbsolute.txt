@@ -84,3 +84,4 @@ F:\Gagan_Project\ExportManager\ExportManager\bin\PagedList.dll
 F:\Gagan_Project\ExportManager\ExportManager\bin\PagedList.Mvc.dll
 F:\Gagan_Project\ExportManager\ExportManager\bin\PagedList.xml
 F:\Gagan_Project\ExportManager\ExportManager\bin\PagedList.Mvc.xml
+F:\Gagan_Project\ExportManager\ExportManager\bin\DotNet.Highcharts.dll

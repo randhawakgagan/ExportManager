@@ -12,6 +12,8 @@ namespace ExportManager.DBModel
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class LicenseManagerEntities : DbContext
     {
@@ -40,5 +42,14 @@ namespace ExportManager.DBModel
         public virtual DbSet<License_Item> License_Item { get; set; }
         public virtual DbSet<Notify> Notifies { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+    
+        public virtual ObjectResult<lic_exp_val_Result> lic_exp_val(string user_Id)
+        {
+            var user_IdParameter = user_Id != null ?
+                new ObjectParameter("user_Id", user_Id) :
+                new ObjectParameter("user_Id", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<lic_exp_val_Result>("lic_exp_val", user_IdParameter);
+        }
     }
 }

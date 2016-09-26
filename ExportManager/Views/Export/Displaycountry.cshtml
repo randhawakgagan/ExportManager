@@ -1,0 +1,86 @@
+﻿@model ExportManager.DBModel.Export_view
+
+@{
+// Layout = null;
+}
+
+
+
+@*  <div id="editablePane">
+            @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
+            @Html.TextBoxFor(s => s.Height, new { @class = "myEditable", disabled = "disabled" })
+        </div>
+    }*@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ExportEdit</title>
+</head>
+<body>
+
+
+
+
+
+
+    
+
+        @if (Model.exp_country != null)
+        {
+
+
+            <h5> Country ADDED</h5>
+            <table class="table  table-sm table-striped table-hover table-bordered" id="itemtable">
+                <thead>
+
+                    <tr>
+
+                        <th class="danger">Country_Name</th>
+
+                        <th><a class="btn" onclick="deletecountry('@Model.exp_country.First().Id')">Delete </a></th>
+
+
+                    </tr>
+                </thead>
+                <tbody id="contacts">
+                    @foreach (var item in Model.exp_country)
+                {
+
+
+
+                    foreach (var c_item in item.Export_Country)
+                    {
+
+                            <tr>
+                                <td>
+                                    @c_item.Country.Name
+
+                                </td>
+
+
+                                @*<td>
+
+                                      @Html.ActionLink("Update", "UpdateExportitem", new { item_id = exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id }, new { id = "update" })
+                                    </td>
+                                *@
+                                <td>
+                                    <input type="checkbox" value="@c_item.Id" class="chcekc" />
+
+                                    @*@Html.ActionLink("Delete", "DeleteExportitem", new { exp_item_id = exp_item.Id })*@
+                                </td>
+
+                            </tr>
+                        }
+
+
+                    }
+                </tbody>
+            </table>
+
+        }
+            
+</body>
+</html>
+

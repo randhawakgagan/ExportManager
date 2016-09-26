@@ -122,6 +122,7 @@
     <NavigationProperty Name="License_Country" Relationship="Self.FK_LicenseCountry_ToTable_1" FromRole="License" ToRole="License_Country" />
     <NavigationProperty Name="License_Item" Relationship="Self.FK_LicenseItem_ToTable" FromRole="License" ToRole="License_Item" />
     <NavigationProperty Name="Exports" Relationship="LicenseManagerModel.FK_Export_ToTable" FromRole="License" ToRole="Export" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="License_Country">
     <Key>
@@ -149,8 +150,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="License_Id" Type="Int32" Nullable="false" />
     <Property Name="Email_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
@@ -354,6 +355,9 @@
       <End Role="License" EntitySet="Licenses" />
       <End Role="Export" EntitySet="Exports" />
     </AssociationSet>
+    <FunctionImport Name="lic_exp_val" ReturnType="Collection(LicenseManagerModel.lic_exp_val_Result)">
+      <Parameter Name="user_Id" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <Association Name="FK_Export_ToTable">
     <End Type="LicenseManagerModel.License" Role="License" Multiplicity="0..1" />
@@ -367,4 +371,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="lic_exp_val_Result">
+    <Property Type="Int32" Name="L_id" Nullable="false" />
+    <Property Type="Decimal" Name="l_val" Nullable="true" Precision="19" />
+    <Property Type="String" Name="lic_no" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="L_id1" Nullable="false" />
+    <Property Type="Decimal" Name="e_val" Nullable="true" Precision="19" />
+  </ComplexType>
 </Schema>

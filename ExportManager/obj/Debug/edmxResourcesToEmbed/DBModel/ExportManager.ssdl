@@ -110,6 +110,7 @@
     <Property Name="License_No" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Expiry_Date" Type="datetime" Nullable="false" />
     <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" />
   </EntityType>
   <EntityType Name="License_Country">
     <Key>
@@ -133,8 +134,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="License_Id" Type="int" Nullable="false" />
     <Property Name="Email_Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -310,6 +311,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="lic_exp_val" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="user_Id" Type="nvarchar" Mode="In" />
+  </Function>
   <EntityContainer Name="LicenseManagerModelStoreContainer">
     <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />

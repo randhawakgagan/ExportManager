@@ -18,43 +18,53 @@
 @Scripts.Render("~/bundles/jqueryui")
 
 
-<script type="text/javascript" >
-
+<script type="text/javascript">
+   
     $(function () {
 
+        //$("#mylink").on("click", function () {
+        $("#formitem").submit(function(event) {
+           
+            event.preventDefault();
+            //var expId = $(this).data('id');
+            var form= $("#formitem");
 
-        $("#mylink").on("click", function () {
+            //@*var url = '@Url.Action("Additem", "Export")';*@
+            var url = "/Export/Additem";
+            
+            var postData = form.serialize();
+
+            $.post(url, postData, function (res) {
+                alert(res.msg);
+                $("#msg").text(res.msg);
+                //$.each(res.msg, function (i, msg) {
+                //    $("#msg").val(msg);;
+                ////    //  alert(exp.exp_date);
+                   
 
 
-            $("#AddUserForm").dialog({
 
-                autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
-                width: 1000,
-                resizable: false,
-                title: 'Add User Form',
-                modal: true,
-                open: function () {
-                    var e = $("#mylink").data('id');
-                    alert(e);
-                    var link = '@Url.Action("itempartialView", "Export", new {exp_id=-1})';
+                //});
 
-                    link = link.replace('-1', e);
-                    alert(link);
-                    $(this).load(link);
-                    //   $(this).load(@Url.Action());
-                },
-                buttons: {
-                    //"Add User": function () {
-                    //    addUserInfo();
-                    //},
-                    Cancel: function () {
-                        $(this).dialog("close");
-                    }
-                }
+
+                //    var row = "";
+                //    $.each(res.items, function (i, item) {
+                //        row += "<tr><td>" + item.item_name + "</td><td>" + item.units + "</td></tr>";
+                //    });
+                //    $("#contacts").html(row);
+                //    //$.each(res.items, function (i, item) {
+                //    //    var user = '<tr class="success">' +'<td>' + item.item_name + '</td>' + '<td>'+ item.units + '</td>' +
+                //    //   " <a type="button" class="btn mylink" href="#article-editor"
+                //    //    data-toggle="modal"
+                //    //    data-id= '+item.id+'>edit</a>" +'</tr>';
+
+                //    //    $('#items_table').append(user);
+                //    //});
             });
-            return false;
+
         });
+
+   
     });
 
 </script>
@@ -67,102 +77,109 @@
 <body>
 
 
-    @using (Html.BeginForm("Additem", "Export", new { exp_id = Model.exp_id }))
-    {
+  @*@using (Html.BeginForm( ))
+  {*@
 
-      
-    <div class="form-inline">
-                <div class="form-group">
-                    <label>Select Item</label>
-                    @Html.DropDownListFor(s => s.SelectedItems, Model.Items, "Select")
-                </div>
-                <div class="form-group">
-
-                </div>
-                <div class="form-group">
-
-                </div>
-                <div class="form-group">
-                    <label>Enter Units</label>
-                    @Html.EditorFor(s => s.No_Of_Units)
-                </div>
-
-
-                <div class="form-group">
-
-
-                    <input type="submit" value="ADD" id="itm_add" class="btn-success" />
-                    @*  @Html.ActionLink("ADD", "AddExportitem", new { exp_id = Model.exp_id, lic_id = Model.lic_id })*@
-
-                </div>
+    <form id="formitem" method="post">
+        <div class="form-inline">
+            <div class="form-group">
+                <label>Select Item</label>
+                @Html.DropDownListFor(s => s.SelectedItems, Model.Items, "Select")
             </div>
-       
-        
+            <div class="form-group">
 
-
-  
-        if (Model.msg != null)
-        {
-            <div class="container">
-                <p class="alert-info">@Model.msg </p>
             </div>
-        }
+            <div class="form-group">
 
-        if (Model.exp_item != null)
+            </div>
+            <div class="form-group">
+                <label>Enter Units</label>
+                @Html.EditorFor(s => s.No_Of_Units)
+            </div>
+
+            <div class="form-group">
+                
+                @Html.HiddenFor(s => s.exp_id)
+            </div>
+
+            <div class="form-group">
+
+
+                <input type="submit" value="ADD" id="mylink" class="btn-success" />
+                @*  @Html.ActionLink("ADD", "AddExportitem", new { exp_id = Model.exp_id, lic_id = Model.lic_id })*@
+
+            </div>
+        </div>
+
+
+
+        <div class="container" >
+            <p class="alert-info" id="msg"></p>
+        </div>
+
+        @*if (Model.msg != null)
         {
-            <h3>ITEMS ADDED</h3>
-            <table class="table">
-                <tr>
+        <div class="container" id="msg">
+            <p class="alert-info">@Model.msg </p>
+        </div>
+        }*@
 
-                    <th class="danger">Item_Name</th>
-                    <th class="warning">No_Units</th>
-                    <th class="danger">Unit Value</th>
-                    <th class="danger"></th>
-                    <th class="danger"></th>
-
-                </tr>
-
-                @foreach (var item in Model.exp_item)
+        @*if (Model.exp_item != null)
                 {
-                    string selectedRow = "";
+                    <h3>ITEMS ADDED</h3>
+                    <table class="table">
+                        <tr>
 
-                    selectedRow = "success";
+                            <th class="danger">Item_Name</th>
+                            <th class="warning">No_Units</th>
+                            <th class="danger">Unit Value</th>
+                            <th class="danger"></th>
+                            <th class="danger"></th>
 
-
-
-                    foreach (var exp_item in item.Export_Item)
-                    {
-                        <tr class="@selectedRow">
-                            <td>
-                                @exp_item.Item.Name
-
-                            </td>
-
-                            <td>
-                                @*@Html.EditorFor(m =>m.No_Of_Units, new { htmlAttributes = new {id="no_units" } })*@
-
-                                @exp_item.No_Of_Units
-
-                            </td>
-                            <td>
-                                @exp_item.Item.Unit_Value
-
-                            </td>
-                            @*<td>
-
-        @Html.ActionLink("Update", "UpdateExportitem", new { item_id = exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id }, new { id = "update" })
-    </td>*@
-                            <td>
-                                @Html.ActionLink("Delete", "DeleteExportitem", new { exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id })
-                            </td>
                         </tr>
-                    }
-                }
 
-            </table>
+                        @foreach (var item in Model.exp_item)
+                        {
+                            string selectedRow = "";
 
-        }
+                            selectedRow = "success";
 
-    }
+
+
+                            foreach (var exp_item in item.Export_Item)
+                            {
+                                <tr class="@selectedRow">
+                                    <td>
+                                        @exp_item.Item.Name
+
+                                    </td>
+
+                                    <td>
+
+
+                                        @exp_item.No_Of_Units
+
+                                    </td>
+                                    <td>
+                                        @exp_item.Item.Unit_Value
+
+                                    </td>
+                                    <td>
+
+                @Html.ActionLink("Update", "UpdateExportitem", new { item_id = exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id }, new { id = "update" })
+            </td>
+                                    <td>
+                                        @Html.ActionLink("Delete", "DeleteExportitem", new { exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id })
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </table>
+
+                }*@
+
+        @*}*@
+    </form>
 </body>
 </html>              

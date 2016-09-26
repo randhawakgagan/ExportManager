@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/jquery")
+   
     @Styles.Render("~/Content/jqueryui")
     @Scripts.Render("~/bundles/modernizr")
-   
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/highchart")
  
 
 </head>
@@ -32,7 +33,7 @@
                     <li>@Html.ActionLink("Items", "Index", "Items")</li>
                     <li>@Html.ActionLink("Licenses", "Index", "Licenses")</li>
                     <li>@Html.ActionLink("Export", "Details", "Export")</li>
-
+                    <li>@Html.ActionLink("Notify", "NotifyV", "Notify")</li>
                    
 
                 </ul>

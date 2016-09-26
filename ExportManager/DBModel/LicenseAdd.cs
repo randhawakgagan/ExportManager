@@ -16,17 +16,19 @@ namespace ExportManager.DBModel
         public class LicenseAdd
         {
             public IEnumerable<int> SelectedCountries { get; set; }
-
             public IEnumerable<SelectListItem> Counties { get; set; }
             public IEnumerable<int> SelectedItems { get; set; }
             public List<SelectListItem> Items { get; set; }
         //  public List<License_Item> Item_list { set; get; }
+        [Required(ErrorMessage = "Required")]
+
+        [Range(0, double.MaxValue, ErrorMessage = "The value must be greater than 0")]
         public int No_Units { get; set; }
        // public List<int> no_of_itms;
-        public List<item_units> Itms_db;
+            public List<item_units> Itms_db;
        // public List<int> Itm_No_Units;
-         public int Id { get; set; }
-        [Required]
+            public int Id { get; set; }
+           [Required]
            public string License_No { get; set; }
 
            [Required]

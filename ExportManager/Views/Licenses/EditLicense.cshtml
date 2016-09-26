@@ -1,0 +1,411 @@
+﻿@model ExportManager.DBModel.LicenseEditView
+
+@{
+// Layout = null;
+}
+
+<style>
+
+
+.table {
+  margin: 0 0 40px 0;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  display: table;
+}
+
+
+.row {
+  display: table-row;
+  background: #f6f6f6;
+}
+.row:nth-of-type(odd) {
+  background: #e9e9e9;
+}
+.row.header {
+  font-weight: 900;
+  color: #ffffff;
+  background: #ea6153;
+}
+.row.green {
+  background: #27ae60;
+}
+.row.blue {
+  background: #2980b9;
+}
+
+
+    
+.cell {
+  padding: 6px 12px;
+  display: table-cell;
+}
+
+</style>
+
+@*  <div id="editablePane">
+            @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
+            @Html.TextBoxFor(s => s.Height, new { @class = "myEditable", disabled = "disabled" })
+        </div>
+    }*@
+
+<!DOCTYPE html>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+
+
+
+
+
+<script type="text/javascript">
+
+
+    //$(function () {
+    //    $.ajaxSetup({ cache: false });
+    //    $("a[data-modal]").on("click", function (e) {
+    //        $('#myModalContent').load(this.href, function () {
+    //            $('#myModal').modal('show');
+    //        });
+    //        return false;
+    //    });
+    //});
+
+
+    function deletecountry(id) {
+
+        //chcekitem
+        var cCheckboxes = new Array();
+        $(".chcekc:checked").each(function () {
+            alert($(this).val()); //works fine
+            cCheckboxes.push($(this).val());
+        });
+
+        var obj = {
+            Lic_id: id,
+            countryCheckboxes: cCheckboxes,
+        };
+        $.post("@Url.Action("Deleteitem", "Licenses")",obj, function (data) {
+            $('#partialcountry').html(data);
+        });
+    }
+    function deleteRow(id) {
+
+        //chcekitem
+        var itemCheckboxes = new Array();
+        $(".chcekitem:checked").each(function () {
+            alert($(this).val()); //works fine
+            itemCheckboxes.push($(this).val());
+        });
+
+        var obj = {
+            Lic_id: id,
+            itemCheckedIds: itemCheckboxes,
+        };
+        $.post("@Url.Action("Deleteitem", "Licenses")",obj, function (data) {
+            $('#partial').html(data);
+        });
+    }
+
+    $(function () {
+        $('a.dialog').click(function () {
+            var url = $(this).attr('href');
+            var dialog = $('<div style="display:none"></div>').appendTo('body');
+            dialog.load(url, {},
+                function (responseText, textStatus, XMLHttpRequest) {
+                    dialog.dialog({
+                        close: function (event, ui) {
+                            dialog.remove();
+                        }
+                    });
+                });
+            return false;
+        });
+    });
+
+
+    $(function () {
+
+
+        $("#mylink").on("click", function () {
+
+           // $("#AddUserForm").dialog('destroy');
+            $("#AddUserForm").dialog({
+
+                autoOpen: false,
+                position: { my: "center", at: "top+350", of: window },
+                width: 'auto',
+                resizable: false,
+                draggable: true,
+                height:  'auto',
+                title: 'Add Item',
+                modal: true,
+                async:true,
+                open: function () {
+                    //var self = this; // add this
+
+                    //    $(self).dialog("close");
+                    var e = $("#mylink").data('id');
+                    alert(e);
+                    var link = '@Url.Action("itempartialView", "Licenses", new {Lic_id=-1})';
+
+                    link = link.replace('-1', e);
+                    alert(link);
+                    $(this).load(link);
+                 //   $(this).load(@Url.Action());
+                },
+
+                close: function (event, ui) {
+                    var LicId =  $("#mylink").data('id');
+                 //   alert(expId);
+
+                    $.post("@Url.Action("GetitemDetails", "Licenses")?Lic_id=" + LicId, function (data) {
+                        $('#partial').html(data);
+                    });
+
+                //    alert("before");
+                  //  $("#AddUserForm").dialog().dialog('close');
+                   // $("#AddUserForm").dialog('close');
+                  //  $("#AddUserForm").dialog('destroy');
+                   // $(this).dialog('destroy').empty();
+                }
+
+
+                //buttons: {
+                //    //"Add User": function () {
+                //    //    addUserInfo();
+                //    //},
+                //    Cancel: function () {
+                //        $(this).dialog("close");
+                //    }
+                //}
+            });
+            $("#AddUserForm").dialog('open');
+            return false;
+        });
+    });
+
+    $(function () {
+
+
+        $("#mylink1").on("click", function () {
+
+            // $("#AddUserForm").dialog('destroy');
+            $("#AddUserForm1").dialog({
+
+                autoOpen: false,
+                position: { my: "center", at: "top+350", of: window },
+                width: 'auto',
+                resizable: false,
+                draggable: true,
+                height: 'auto',
+                title: 'Add country',
+                modal: true,
+                async: true,
+                open: function () {
+                    //var self = this; // add this
+
+                    //    $(self).dialog("close");
+                    var e = $("#mylink1").data('id');
+                    alert(e);
+                    var link = '@Url.Action("CpartialView", "Licenses", new {Lic_id=-1})';
+
+                    link = link.replace('-1', e);
+                    alert(link);
+                    $(this).load(link);
+                    //   $(this).load(@Url.Action());
+                },
+
+                close: function (event, ui) {
+                    var expId = $("#mylink1").data('id');
+                    alert(expId);
+
+                    $.post("@Url.Action("GetCDetails", "Licenses")?Lic_id=" + expId, function (data) {
+                        $('#partialcountry').html(data);
+                    });
+
+
+                }
+
+
+            });
+            $("#AddUserForm1").dialog('open');
+            return false;
+        });
+
+    });
+        @*$(".btn.mylink").on("click", function () {
+            var expId = $(this).data('id');
+            $.post("@Url.Action("GetExpDetails", "Export")?val=" + expId, function (res) {
+                $.each(res.detail, function (i, exp) {
+                    $("#ref_no").val(exp.ref_no);
+                  //  alert(exp.exp_date);
+                    // $("#export_date").val(exp.exp_date);
+                    var dateString = exp.exp_date.substr(6);
+                    var currentTime = new Date(parseInt(dateString));
+                    var month = currentTime.getMonth() + 1;
+                    var day = currentTime.getDate();
+                    var year = currentTime.getFullYear();
+                    var date = month + "/" + day + "/" + year;
+                    $("#export_date").attr('value', date);
+
+                    var dateString1 = exp.lic_date.substr(6);
+                    var currentTime1 = new Date(parseInt(dateString1));
+                    var month1 = currentTime1.getMonth() + 1;
+                    var day1 = currentTime1.getDate();
+                    var year1 = currentTime1.getFullYear();
+                    var date1 = month1 + "/" + day1 + "/" + year1;
+                    $("#expiry_date").val(date1);
+                    $("#expiry_date").prop('disabled',true);
+                    $("#lic_no").val(exp.lic_no);
+                    $("#lic_no").prop('disabled', true);
+                    //$("#").val(data.Year.toString() + "-" +
+                    //                   ("00" + data.Month.toString()).slice(-2));
+
+
+
+                });
+
+
+                var row = "";
+                $.each(res.items, function (i, item) {
+                    row += "<tr><td>" + item.item_name + "</td><td>" + item.units + "</td></tr>";
+                });
+                $("#contacts").html(row);
+                //$.each(res.items, function (i, item) {
+                //    var user = '<tr class="success">' +'<td>' + item.item_name + '</td>' + '<td>'+ item.units + '</td>' +
+                //   " <a type="button" class="btn mylink" href="#article-editor"
+                //    data-toggle="modal"
+                //    data-id= '+item.id+'>edit</a>" +'</tr>';
+
+                //    $('#items_table').append(user);
+                //});
+            });
+        });
+
+
+
+    *@
+</script>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    <div id="my"></div>
+    @using (Html.BeginForm("Saveedit", "Licenses"))
+    {
+        @*<div class="modal fade in" id="article-editor">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h3>Title of the form</h3>
+                    </div>
+
+
+                    <div class="modal-body">*@
+
+        <div class="form-horizontal">
+            <h4>License</h4>
+            <hr />
+            <div class="table">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Lic_details.License_No, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Lic_details.License_No, new { htmlAttributes = new { @class = "form-control", id = "ref_no" } })
+                        @Html.ValidationMessageFor(model => model.Lic_details.License_No,"", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Lic_details.Expiry_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+                        @Html.EditorFor(model => model.Lic_details.Expiry_Date, new { htmlAttributes = new { @class = "form-control", id = "export_date", @Value = @Model.Lic_details.Expiry_Date.ToString("yyyy-MM-dd") } })
+
+                        @Html.ValidationMessageFor(model => model.Lic_details.Expiry_Date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Lic_details.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+                        @Html.EditorFor(model => model.Lic_details.Notes, new { htmlAttributes = new { @class = "form-control"} })
+
+                        @Html.ValidationMessageFor(model => model.Lic_details.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+               
+                <div>
+                    @Html.HiddenFor(model => model.Lic_details.Id);
+                </div>
+
+                <div id="AddUserForm"></div>
+                <div class="container">
+                    <a type="button" id="mylink"
+                       href="#my"
+                       data-toggle="modal"
+                       data-id="@Model.Lic_details.Id">Add Item</a>
+                </div>
+
+                @*<a type="button" id="modal_add"
+                    href="#items"
+                    data-toggle="modal"
+                    data-id="@Model.export_val.Id">ADD</a>*@
+
+                @*@Html.ActionLink("khush", "itempartialView", new { exp_id = Model.export_val.Id },
+                    new { @class = "dialog" })*@
+
+                @*@Html.ActionLink("Add items", "itempartialView", new { exp_id = Model.export_val.Id }, new { id = "linkId" })*@
+                <p class="container">
+                    @Model.msg
+            </p>
+            <!-- modal placeholder-->
+            <div id='myModal' class='modal fade in'>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div id='myModalContent'></div>
+                    </div>
+                </div>
+            </div>
+            <div id="partial">
+
+                @Html.Partial("LicItemEdit", Model)
+            </div>
+
+
+            <div id="AddUserForm1"></div>
+            <div class="container">
+                <a type="button" id="mylink1"
+                   href="#my"
+                   data-toggle="modal"
+                   data-id="@Model.Lic_details.Id">Add Country</a>
+            </div>
+
+            <div id="partialcountry">
+                @Html.Partial("LicCounEdit", Model)
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="exp_edit" value="Save"
+                           class="btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+                        @*</div>
+
+                                        <div class="modal-footer">
+                                            <a href="#" class="btn" data-dismiss="modal">Close</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+    }
+</body>
+</html>

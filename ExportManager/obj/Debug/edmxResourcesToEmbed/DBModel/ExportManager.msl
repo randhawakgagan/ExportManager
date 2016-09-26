@@ -105,6 +105,7 @@
     <EntitySetMapping Name="Licenses">
       <EntityTypeMapping TypeName="LicenseManagerModel.License">
         <MappingFragment StoreEntitySet="License">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="License_No" ColumnName="License_No" />
           <ScalarProperty Name="Expiry_Date" ColumnName="Expiry_Date" />
@@ -134,8 +135,8 @@
     <EntitySetMapping Name="Notifies">
       <EntityTypeMapping TypeName="LicenseManagerModel.Notify">
         <MappingFragment StoreEntitySet="Notify">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="License_Id" ColumnName="License_Id" />
           <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -159,5 +160,16 @@
         <ScalarProperty Name="Id" ColumnName="UserId" />
       </EndProperty>
     </AssociationSetMapping>
+    <FunctionImportMapping FunctionImportName="lic_exp_val" FunctionName="LicenseManagerModel.Store.lic_exp_val">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LicenseManagerModel.lic_exp_val_Result">
+          <ScalarProperty Name="L_id" ColumnName="L_id" />
+          <ScalarProperty Name="l_val" ColumnName="l_val" />
+          <ScalarProperty Name="lic_no" ColumnName="lic_no" />
+          <ScalarProperty Name="L_id1" ColumnName="L_id1" />
+          <ScalarProperty Name="e_val" ColumnName="e_val" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

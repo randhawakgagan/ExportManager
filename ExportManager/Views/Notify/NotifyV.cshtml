@@ -1,0 +1,119 @@
+﻿@model IEnumerable<ExportManager.DBModel.Notify>
+
+@{
+    //Layout = null;
+}
+
+@section scripts {
+    @Scripts.Render("~/Scripts/angular.js")
+    @Scripts.Render("~/Scripts/App/module.js")
+    @Scripts.Render("~/Scripts/App/tryangular.js")
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View</title>
+</head>
+<body ng-app="notifyApp">
+    <div class="row">
+        <div ng-controller="Notifyctrl" class="col-md-6 col-md-offset-3">
+            <table class="table table-responsive table-striped">
+                <tr>
+                    <th>Email Address</th>
+                </tr>
+                <tr ng-repeat="email in newemail">
+                    <td>
+                        {{ email.address}}
+                    </td>
+                    <td>
+                        <button class ="btn-danger"  ng-click="deleteemail($index, email)">Delete</button>
+                    </td>
+                </tr>
+
+               
+            </table>
+            <div >
+                <form novalidate name="emailform" class="form-inline" ng-submit="addemail()">
+                    <div class="form-group">
+                        <label>Enter Email</label>
+                        <input type="email" placeholder="enter email" ng-model="emails.address"  name="addr" required ng-minlength="8"/>
+                        
+                    </div>
+
+                    <div class="form-group ">
+                        <input type="submit" value="ADD" class="btn btn-sm btn-info" ng-disabled="emailform.$invalid"/>
+
+                    </div>
+                      
+
+                </form>
+               
+                <div class="col-md-6 col-md-offset-3 form-group">
+                    <div>
+                        <span ng-show="emailform.addr.$error.minlength" class="text-danger">required min length 8</span>
+                        <label></label>
+                    </div>
+                    <div  >
+                        <input type="submit" value="NotifyALL" ng-click="savedata()" class="btn btn-sm btn-success" />
+                    </div>
+                    <div>
+                        <i >
+
+                        </i>
+                    </div>
+                     </div>
+
+                <table class="table table-responsive table-striped">
+                    <tr>
+                        <th>Email Address Added</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="email in mails">
+                        <td>
+                            {{ email.Emailid}}
+                        </td>
+                        <td>
+                            <button class="btn-danger" ng-click="deleteServeremail($index, email.Emailid)">Delete</button>
+                        </td>
+                    </tr>
+
+                    
+                </table>
+                
+            </div>
+        </div>
+    </div>
+
+    @*@if (Model != null)
+    {
+    <h3>Emails Added</h3>
+    <table class="table">
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Email_Id)
+            </th>
+         
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email_Id)
+                </td>
+               
+                <td>
+                   
+                    @Html.ActionLink("Delete", "NotifyV", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+    }*@
+</body>
+</html>

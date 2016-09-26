@@ -28,24 +28,14 @@
         $("#Export_Date").change(function () {
 
             $("#lic_create").prop('disabled', false);
-          alert("m here");
+         // alert("m here");
           var exp = $(this).val();
         
           var lic = $("#expiry_date").val();
         //  var year = exp.getFullYear();
-
-          alert(exp);
-         
-          alert(lic);
-        //  var date = new Date(exp);
-         //  var dateString = lic.substring(6);
-          var currentTime = new Date(exp);
-           var month = currentTime.getMonth() + 1;
-           var day = currentTime.getDate()+1;
-            var year = currentTime.getFullYear();
-            var date = month + "/" + day + "/" + year;
-        alert(date);
-        if (date > lic) {
+            var lic1 = Date.parse(lic, "yyyy-MM-dd");
+            var date1 = Date.parse(exp, "yyyy-MM-dd");
+        if (date1 > lic1) {
             alert("License expired, Please choose date <="+ lic);
             $("#Export_Date").html("");
             $("#lic_create").prop('disabled', true);
@@ -99,9 +89,10 @@
                             var month = currentTime.getMonth() + 1;
                             var day = currentTime.getDate();
                             var year = currentTime.getFullYear();
-                            var date = month + "/" + day + "/" + year;
+                            var date =  year+"-"+ month + "-" + day ;
                             //var new_date=new Date(lic.expiry_date.match(/\d+/)[0] * 1);
-                         
+                            alert(date);
+                            //var lic1 = Date.parse(date, "yyyy-MM-dd");
                             $('#expiry_date').val(date);
                           //  alert($('#expiry_date').val());
                            // $('#expiry_date').val(lic.expiry_date);
@@ -200,9 +191,9 @@
                         @Html.LabelFor(model => model.LicenseDetails.Expiry_Date, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
 
-                            @Html.EditorFor(model => model.LicenseDetails.Expiry_Date, new { htmlAttributes = new { @class = "form-control", id = "expiry_date" } })
+                            @Html.EditorFor(model => model.Expiry_Date, new { htmlAttributes = new { @class = "form-control", id = "expiry_date", @Value = @Model.Expiry_Date.ToString("yyyy-MM-dd") ,disabled=true} })
 
-                            @Html.ValidationMessageFor(model => model.LicenseDetails.Expiry_Date, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Expiry_Date, "", new { @class = "text-danger" })
                         </div>
                     </div>
 

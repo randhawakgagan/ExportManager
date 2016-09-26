@@ -15,7 +15,7 @@ namespace ExportManager.DBModel
     public partial class Notify
     {
         public int Id { get; set; }
-        public int License_Id { get; set; }
         public string Email_Id { get; set; }
+        public string UserId { get; set; }
     }
 }

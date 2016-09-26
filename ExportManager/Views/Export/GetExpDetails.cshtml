@@ -34,23 +34,80 @@
     //    });
     //});
 
-   
+    
+    function deletecountry(id) {
+
+        //chcekitem
+        var cCheckboxes = new Array();
+        $(".chcekc:checked").each(function () {
+            alert($(this).val()); //works fine
+            cCheckboxes.push($(this).val());
+        });
+
+        var obj = {
+            exp_id: id,
+            countryCheckboxes: cCheckboxes,
+        };
+        $.post("@Url.Action("DeleteExportitem", "Export")",obj, function (data) {
+            $('#partialcountry').html(data);
+        });
+    }
+    function deleteRow(id) {
+
+        //chcekitem
+        var itemCheckboxes = new Array();
+        $(".chcekitem:checked").each(function () {
+            alert($(this).val()); //works fine
+            itemCheckboxes.push($(this).val());
+        });
+
+        var obj = {
+            exp_id: id,
+            itemCheckedIds: itemCheckboxes,
+        };
+        $.post("@Url.Action("DeleteExportitem", "Export")",obj, function (data) {
+            $('#partial').html(data);
+        });
+    }
+
+    $(function () {
+        $('a.dialog').click(function () {
+            var url = $(this).attr('href');
+            var dialog = $('<div style="display:none"></div>').appendTo('body');
+            dialog.load(url, {},
+                function (responseText, textStatus, XMLHttpRequest) {
+                    dialog.dialog({
+                        close: function (event, ui) {
+                            dialog.remove();
+                        }
+                    });
+                });
+            return false;
+        });
+    });
+
 
     $(function () {
 
 
         $("#mylink").on("click", function () {
 
-
+           // $("#AddUserForm").dialog('destroy');
             $("#AddUserForm").dialog({
 
-                autoOpen: true,
+                autoOpen: false,
                 position: { my: "center", at: "top+350", of: window },
-                width: 1000,
+                width: 'auto',
                 resizable: false,
-                title: 'Add User Form',
+                draggable: true,
+                height:  'auto',
+                title: 'Add Item',
                 modal: true,
+                async:true,
                 open: function () {
+                    //var self = this; // add this
+                   
+                    //    $(self).dialog("close");
                     var e = $("#mylink").data('id');
                     alert(e);
                     var link = '@Url.Action("itempartialView", "Export", new {exp_id=-1})';
@@ -59,18 +116,86 @@
                     alert(link);
                     $(this).load(link);
                  //   $(this).load(@Url.Action());
-      },
-                buttons: {
-                    //"Add User": function () {
-                    //    addUserInfo();
-                    //},
-                    Cancel: function () {
-                        $(this).dialog("close");
-                    }
+                },
+
+                close: function (event, ui) {
+                    var expId =  $("#mylink").data('id');
+                    alert(expId);
+
+                    $.post("@Url.Action("GetExpDetails", "Export")?exp_id=" + expId, function (data) {
+                        $('#partial').html(data);
+                    });
+
+                //    alert("before");
+                  //  $("#AddUserForm").dialog().dialog('close');
+                   // $("#AddUserForm").dialog('close');
+                  //  $("#AddUserForm").dialog('destroy');
+                   // $(this).dialog('destroy').empty();
                 }
+              
+
+                //buttons: {
+                //    //"Add User": function () {
+                //    //    addUserInfo();
+                //    //},
+                //    Cancel: function () {
+                //        $(this).dialog("close");
+                //    }
+                //}
             });
+            $("#AddUserForm").dialog('open');
             return false;
         });
+    });
+
+    $(function () {
+
+
+        $("#mylink1").on("click", function () {
+
+            // $("#AddUserForm").dialog('destroy');
+            $("#AddUserForm1").dialog({
+
+                autoOpen: false,
+                position: { my: "center", at: "top+350", of: window },
+                width: 'auto',
+                resizable: false,
+                draggable: true,
+                height: 'auto',
+                title: 'Add country',
+                modal: true,
+                async: true,
+                open: function () {
+                    //var self = this; // add this
+
+                    //    $(self).dialog("close");
+                    var e = $("#mylink1").data('id');
+                    alert(e);
+                    var link = '@Url.Action("CpartialView", "Export", new {exp_id=-1})';
+
+                    link = link.replace('-1', e);
+                    alert(link);
+                    $(this).load(link);
+                    //   $(this).load(@Url.Action());
+                },
+
+                close: function (event, ui) {
+                    var expId = $("#mylink1").data('id');
+                    alert(expId);
+
+                    $.post("@Url.Action("GetCountryDetails", "Export")?exp_id=" + expId, function (data) {
+                        $('#partialcountry').html(data);
+                    });
+
+                  
+                }
+
+              
+            });
+            $("#AddUserForm1").dialog('open');
+            return false;
+        });
+
     });
         @*$(".btn.mylink").on("click", function () {
             var expId = $(this).data('id');
@@ -122,31 +247,8 @@
         });
 
 
-        $("#item_edit").on('click', function () {
-
-            $("#AddUserForm").dialog({
-                autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
-                width: 1000,
-                resizable: false,
-                title: 'Add User Form',
-                modal: true,
-                open: function () {
-                    var exid = $(".btn.mylink").data('id');
-                    $(this).load('@Url.Action("itempartialView", "Export")');
-                },
-                buttons: {
-                    //"Add User": function () {
-                    //    addUserInfo();
-                    //},
-                    Cancel: function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-            return false;
-        });
-    });*@
+      
+    *@
 </script>
 
 <html>
@@ -156,7 +258,7 @@
 </head>
 <body>
     <div id="my"></div>
-    @using (Html.BeginForm("articles", "editor", FormMethod.Post, new { id = "span" }))
+    @using (Html.BeginForm("Saveedit", "Export"))
     {
         @*<div class="modal fade in" id="article-editor">
             <div class="modal-dialog">
@@ -186,7 +288,7 @@
                                     @Html.LabelFor(model => model.export_val.Export_Date, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
 
-                                        @Html.EditorFor(model => model.export_val.Export_Date, new { htmlAttributes = new { @class = "form-control", id = "export_date" } })
+                                        @Html.EditorFor(model => model.export_val.Export_Date, new { htmlAttributes = new { @class = "form-control", id = "export_date" , @Value = @Model.export_val.Export_Date.ToString("yyyy-MM-dd") } })
 
                                         @Html.ValidationMessageFor(model => model.export_val.Export_Date, "", new { @class = "text-danger" })
                                     </div>
@@ -204,27 +306,32 @@
                                     @Html.LabelFor(model => model.export_val.License.License_No, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
 
-                                        @Html.EditorFor(model => model.export_val.License.License_No, new { htmlAttributes = new { @class = "form-control", id = "lic_no" } })
+                                        @Html.EditorFor(model => model.export_val.License.License_No, new { htmlAttributes = new { @class = "form-control", id = "lic_no",disabled=true } })
 
                                         @Html.ValidationMessageFor(model => model.export_val.License.License_No, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-
+                                <div>
+                                    @Html.HiddenFor(model => model.export_val.Id);
+                                </div>
 
                                 <div id="AddUserForm"></div>
-                                <a type="button" id="mylink"
-                                   href="#my"
-                                   data-toggle="modal"
-                                   data-id="@Model.export_val.Id">edit</a>
+                                <div class="container">
+                                    <a type="button" id="mylink"
+                                       href="#my"
+                                       data-toggle="modal"
+                                       data-id="@Model.export_val.Id">Add Item</a>
+                                </div>
 
-                                <a type="button" id="modal_add"
+                                @*<a type="button" id="modal_add"
                                    href="#items"
                                    data-toggle="modal"
-                                   data-id="@Model.export_val.Id">ADD</a>
+                                   data-id="@Model.export_val.Id">ADD</a>*@
 
-                              
+                              @*@Html.ActionLink("khush", "itempartialView", new { exp_id = Model.export_val.Id },
+                                         new { @class = "dialog" })*@
 
-                                @Html.ActionLink("Add items", "itempartialView", new { exp_id = Model.export_val.Id }, new { id = "linkId" })
+                                @*@Html.ActionLink("Add items", "itempartialView", new { exp_id = Model.export_val.Id }, new { id = "linkId" })*@
                                 <p class="container">@Model.msg
                                 </p>
                                 <!-- modal placeholder-->
@@ -235,73 +342,23 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if (Model.exp_item != null)
-                                {
-                                <h3>ITEMS ADDED</h3>
-                                <table class="table table-striped table-hover table-bordered">
-                                    <thead>
+                                <div id="partial">
 
-                                        <tr>
-
-                                            <th class="danger">Item_Name</th>
-                                            <th class="warning">No_Units</th>
-                                            <th class="danger">Unit Value</th>
-                                            @*<th class="danger"></th>*@
+                                    @Html.Partial("Itemdisplay", Model)
+                                </div>
 
 
-                                        </tr>
-                                    </thead>
+                                <div id="AddUserForm1"></div>
+                                <div class="container">
+                                    <a type="button" id="mylink1"
+                                       href="#my"
+                                       data-toggle="modal"
+                                       data-id="@Model.export_val.Id">Add Country</a>
+                                </div>
 
-
-
-
-                                    <tbody id="contacts">
-                                        @foreach (var item in Model.exp_item)
-                                        {
-                                            string selectedRow = "";
-
-                                            selectedRow = "success";
-
-
-
-                                            foreach (var exp_item in item.Export_Item)
-                                            {
-
-                                                <tr class="@selectedRow">
-                                                    <td>
-                                                        @exp_item.Item.Name
-
-                                                    </td>
-
-                                                    <td>
-                                                        @*@Html.EditorFor(m =>m.No_Of_Units, new { htmlAttributes = new {id="no_units" } })*@
-
-                                                        @exp_item.No_Of_Units
-
-                                                    </td>
-                                                    <td>
-                                                        @exp_item.Item.Unit_Value
-
-                                                    </td>
-                                                    @*<td>
-
-                                                        @Html.ActionLink("Update", "UpdateExportitem", new { item_id = exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id }, new { id = "update" })
-                                                    </td>
-                                                    <td>
-                                                        @Html.ActionLink("Delete", "DeleteExportitem", new { exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id })
-                                                    </td>*@
-                                                </tr>
-                                            }
-
-                                        }
-                                    </tbody>
-                             </table>
-
-    }
-
-
-
-
+                                <div id="partialcountry">
+                                    @Html.Partial("Displaycountry", Model)
+                                </div>
                                                    <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
                                             <input type="submit" id="exp_edit" value="Save"

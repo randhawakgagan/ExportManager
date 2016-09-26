@@ -115,6 +115,7 @@
           <Property Name="License_No" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Expiry_Date" Type="datetime" Nullable="false" />
           <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="License_Country">
           <Key>
@@ -138,8 +139,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="License_Id" Type="int" Nullable="false" />
           <Property Name="Email_Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -315,6 +316,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="lic_exp_val" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_Id" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="LicenseManagerModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -511,6 +515,7 @@
           <NavigationProperty Name="License_Country" Relationship="Self.FK_LicenseCountry_ToTable_1" FromRole="License" ToRole="License_Country" />
           <NavigationProperty Name="License_Item" Relationship="Self.FK_LicenseItem_ToTable" FromRole="License" ToRole="License_Item" />
           <NavigationProperty Name="Exports" Relationship="LicenseManagerModel.FK_Export_ToTable" FromRole="License" ToRole="Export" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="License_Country">
           <Key>
@@ -538,8 +543,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="License_Id" Type="Int32" Nullable="false" />
           <Property Name="Email_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -743,6 +748,9 @@
             <End Role="License" EntitySet="Licenses" />
             <End Role="Export" EntitySet="Exports" />
           </AssociationSet>
+          <FunctionImport Name="lic_exp_val" ReturnType="Collection(LicenseManagerModel.lic_exp_val_Result)">
+          <Parameter Name="user_Id" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <Association Name="FK_Export_ToTable">
           <End Type="LicenseManagerModel.License" Role="License" Multiplicity="0..1" />
@@ -756,6 +764,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="lic_exp_val_Result">
+          <Property Type="Int32" Name="L_id" Nullable="false" />
+          <Property Type="Decimal" Name="l_val" Nullable="true" Precision="19" />
+          <Property Type="String" Name="lic_no" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="L_id1" Nullable="false" />
+          <Property Type="Decimal" Name="e_val" Nullable="true" Precision="19" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -866,6 +881,7 @@
           <EntitySetMapping Name="Licenses">
             <EntityTypeMapping TypeName="LicenseManagerModel.License">
               <MappingFragment StoreEntitySet="License">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="License_No" ColumnName="License_No" />
                 <ScalarProperty Name="Expiry_Date" ColumnName="Expiry_Date" />
@@ -895,8 +911,8 @@
           <EntitySetMapping Name="Notifies">
             <EntityTypeMapping TypeName="LicenseManagerModel.Notify">
               <MappingFragment StoreEntitySet="Notify">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="License_Id" ColumnName="License_Id" />
                 <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -920,6 +936,17 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="lic_exp_val" FunctionName="LicenseManagerModel.Store.lic_exp_val">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LicenseManagerModel.lic_exp_val_Result">
+                <ScalarProperty Name="L_id" ColumnName="L_id" />
+                <ScalarProperty Name="l_val" ColumnName="l_val" />
+                <ScalarProperty Name="lic_no" ColumnName="lic_no" />
+                <ScalarProperty Name="L_id1" ColumnName="L_id1" />
+                <ScalarProperty Name="e_val" ColumnName="e_val" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -934,8 +961,8 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

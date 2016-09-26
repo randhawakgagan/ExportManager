@@ -1,4 +1,5 @@
 ﻿using ExportManager.DBModel;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,13 +97,22 @@ namespace ExportManager.Controllers
                 foreach (var i in licenseadd.SelectedItems)
                 {
                     var items_add = new License_Item();
+                    var item_found = from itm in db.License_Item where itm.Item_Id == i && itm.License_Id == license_id select itm;
+                    if (!item_found.Any())
+                    {
+                        items_add.Item_Id = i;
 
-                    items_add.Item_Id = i;
+                        items_add.License_Id = license_id;
+                        items_add.No_Units = licenseadd.No_Units;
+                        db.License_Item.Add(items_add);
+                    }
+                    else
+                    {
 
-                    items_add.License_Id = license_id;
-                    items_add.No_Units = licenseadd.No_Units;
-                    db.License_Item.Add(items_add);
+                        item_found.FirstOrDefault().No_Units= licenseadd.No_Units;
 
+
+                    }
                 }
                 db.SaveChanges();
                 var item_names =
@@ -228,6 +238,8 @@ namespace ExportManager.Controllers
             l.License_No = licenseadd.License_No;
             l.Expiry_Date = licenseadd.Expiry_Date;
             l.Notes = licenseadd.Notes;
+            l.UserId  = User.Identity.GetUserId();
+
             db.Licenses.Add(l);
             db.SaveChanges();
             var license_id = from a in db.Licenses

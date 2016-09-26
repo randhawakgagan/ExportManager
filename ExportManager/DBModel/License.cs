@@ -26,6 +26,7 @@ namespace ExportManager.DBModel
         public string License_No { get; set; }
         public System.DateTime Expiry_Date { get; set; }
         public string Notes { get; set; }
+        public string UserId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<License_Country> License_Country { get; set; }

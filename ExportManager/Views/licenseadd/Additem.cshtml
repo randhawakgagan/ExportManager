@@ -22,42 +22,49 @@
         @Html.AntiForgeryToken()
 
         <div id="item_data">
-            <h4>Item Add</h4>
+            <h4>ITEM ADD</h4>
+
+
+            <div class="form-inline">
+
+                <div class="form-group">
+                    <label>Choose Item</label>
+                    
 
 
 
-            <div>
-                <label>Item_list</label>
-                <div>
+                        @Html.DropDownListFor(x => x.SelectedItems, Model.Items, "select")
 
-
-
-                    @Html.DropDownListFor(x => x.SelectedItems, Model.Items, "select")
-
+                    
                 </div>
-            </div>
 
-            <div>
-                @Html.LabelFor(model => model.No_Units)
-                <div>
-                    @Html.EditorFor(model => model.No_Units)
-                    @Html.ValidationMessageFor(model => model.No_Units, "")
-                </div>
-            </div>
-            <div>
-                <div>
-                    <input type="submit"  value="ADD" id="itm_add" class="btn btn-default" />
-                </div>
-            </div>
+                <div class="form-group">
+                    <label>
 
-        </div>
+                        No_Units
+
+                    </label>
+                    
+                        @Html.EditorFor(model => model.No_Units)
+                        @Html.ValidationMessageFor(model => model.No_Units, "")
+                    
+                </div>
+                <div class="form-group">
+                     <label></label> 
+                    
+                        <button type="submit"  id="itm_add" class="btn btn-success">Add Item</button>
+                    
+                </div>
+
+            </div>
+            </div>
 
         if (Model.Itms_db != null)
         {
             <h3>ITEMS ADDED</h3>
-            <table class="table">
+            <table class="table table-bordered table-hover" >
                 <tr>
-                    <th></th>
+                   
                     <th>Item_Name</th>
                     <th>No_Units</th>
                     
@@ -70,9 +77,7 @@
                         selectedRow = "success";
                    
                     <tr class="@selectedRow">
-                        <td>
-                            @Html.ActionLink("Select", "Index")
-                        </td>
+                        
                         <td>
                             @item.Itm_names
                         </td>
@@ -88,7 +93,7 @@
     }
 
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Index","Licenses")
     </div>
 </body>
 </html>

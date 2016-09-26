@@ -23,10 +23,9 @@ namespace ExportManager.DBModel
         }
     
         public int Id { get; set; }
-        [Required]
         public string Reference_No { get; set; }
-        [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy - MM - dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Export_Date { get; set; }
         public Nullable<int> License_Id { get; set; }
     

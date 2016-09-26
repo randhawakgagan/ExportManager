@@ -5,6 +5,10 @@
 }
 
 <!DOCTYPE html>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+
 
 <html>
 <head>
@@ -16,12 +20,26 @@
         @Html.ActionLink("Create New", "Create", "LicenseAdd")
     </p>
 
-   @* <style>
-        .jumbotron {
-            background-color: antiquewhite;
-        }
-    </style>
-*@
+    <form method="get" class="form-group">
+        <input type="search" name="searchterm" id="serach" />
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Search by License No.
+        </button>
+        @*<input type="submit"  class ="btn-primary" value="Search by Ref. No "/>*@
+
+        @* <style>
+                .jumbotron {
+                    background-color: antiquewhite;
+                }
+            </style>
+        *@
+        <div>
+            Page @(Model.Licenses.PageCount < Model.Licenses.PageNumber ? 0 : Model.Licenses.PageNumber) of @Model.Licenses.PageCount
+
+            @Html.PagedListPager(Model.Licenses, page => Url.Action("Index", new {searchterm=ViewBag.search, page = page }))
+
+        </div>
+    </form>
     <div class="table-responsive">
         <table class="table">
             <tr>
@@ -38,7 +56,8 @@
 
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.License_No)
+                        @Html.ActionLink(item.License_No, "EditLicense", new { Lic_id = item.Id })
+                        @*@Html.DisplayFor(modelItem => item.License_No)*@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Expiry_Date)
@@ -64,7 +83,7 @@
         @if (Model.License_item != null)
         {
 
-            <div class="jumbotron">
+
                 <div class="container">
                     <h3>Items of Selected License</h3>
                     <table class="table">
@@ -78,16 +97,12 @@
 
                         @foreach (var item in Model.License_item)
                         {
-                            string selectedRow = "";
-                            if (item.Id == ViewBag.t_id)
-                            {
-                                selectedRow = "success";
-                            }
 
-                           
+
+
                                 foreach (var exp_item in item.License_Item)
                                 {
-                                   <tr class="@selectedRow">
+                                   <tr>
                                     <td>
                                         @exp_item.Item.Name
 
@@ -111,8 +126,7 @@
 
                     </table>
                 </div>
-            </div>
-        }
+                   }
 
 
 
