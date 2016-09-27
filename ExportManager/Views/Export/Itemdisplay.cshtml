@@ -5,7 +5,11 @@
 }
 
 
-
+@*<style>
+    .alert {
+  display:inline-block;
+}
+</style>*@
 @*  <div id="editablePane">
             @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
             @Html.TextBoxFor(s => s.Height, new { @class = "myEditable", disabled = "disabled" })
@@ -30,15 +34,16 @@
 @if (Model.exp_item != null)
 {
 
-    <h5>ITEMS ADDED</h5>
-    <table class="table  table-condensed  table-hover table-bordered" id="itemtable">
-        <thead class="table-inverse">
+    <h4 class="alert-info">Items Added</h4>
+    
+    <table class="table table-striped table-responsive " id="itemtable">
+        <thead >
 
             <tr>
 
-                <th class="danger">Item_Name</th>
-                <th class="warning">No_Units</th>
-                <th class="danger">Unit Value</th>
+                <th >Item_Name</th>
+                <th >No_Units</th>
+                <th >Unit Value</th>
                 <th><a class="btn" onclick="deleteRow('@Model.exp_item.First().Id')">Delete item</a></th>
 
 

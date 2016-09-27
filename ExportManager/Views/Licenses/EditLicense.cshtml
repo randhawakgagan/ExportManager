@@ -4,7 +4,7 @@
 // Layout = null;
 }
 
-<style>
+@*<style>
 
 
 .table {
@@ -41,7 +41,7 @@
   display: table-cell;
 }
 
-</style>
+</style>*@
 
 @*  <div id="editablePane">
             @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
@@ -77,7 +77,7 @@
         //chcekitem
         var cCheckboxes = new Array();
         $(".chcekc:checked").each(function () {
-            alert($(this).val()); //works fine
+          //  alert($(this).val()); //works fine
             cCheckboxes.push($(this).val());
         });
 
@@ -94,7 +94,7 @@
         //chcekitem
         var itemCheckboxes = new Array();
         $(".chcekitem:checked").each(function () {
-            alert($(this).val()); //works fine
+           // alert($(this).val()); //works fine
             itemCheckboxes.push($(this).val());
         });
 
@@ -203,22 +203,20 @@
                 modal: true,
                 async: true,
                 open: function () {
-                    //var self = this; // add this
-
-                    //    $(self).dialog("close");
+                    
                     var e = $("#mylink1").data('id');
-                    alert(e);
+                  //  alert(e);
                     var link = '@Url.Action("CpartialView", "Licenses", new {Lic_id=-1})';
 
                     link = link.replace('-1', e);
-                    alert(link);
+                //    alert(link);
                     $(this).load(link);
                     //   $(this).load(@Url.Action());
                 },
 
                 close: function (event, ui) {
                     var expId = $("#mylink1").data('id');
-                    alert(expId);
+              //      alert(expId);
 
                     $.post("@Url.Action("GetCDetails", "Licenses")?Lic_id=" + expId, function (data) {
                         $('#partialcountry').html(data);
@@ -393,6 +391,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" id="exp_edit" value="Save"
                            class="btn-primary" />
+                    <button class="btn-xs">    @Html.ActionLink("Cancel", "Index")</button> 
                 </div>
             </div>
         </div>

@@ -21,9 +21,9 @@
     </p>
 
     <form method="get" class="form-group">
-        <input type="search" name="searchterm" id="serach" />
+        <input type="search" name="searchterm" id="serach" placeholder="search by License No." />
         <button type="submit" class="btn btn-primary">
-            <span class="glyphicon glyphicon-search"></span> Search by License No.
+            <span class="glyphicon glyphicon-search"></span> 
         </button>
         @*<input type="submit"  class ="btn-primary" value="Search by Ref. No "/>*@
 
@@ -46,8 +46,8 @@
                 <th class="active">License_No</th>
                 <th class="info">Expiry_Date</th>
                 <th class="warning">Notes</th>
-                <th></th>
-                <th></th>
+                <th class="warning"></th>
+                <th class="warning"></th>
             </tr>
 
             @foreach (var item in Model.Licenses)
@@ -61,17 +61,17 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Expiry_Date)
-                    </td>
+                        </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>
 
 
                     <td>
-                        @Html.ActionLink("Show Items", "Index", new { lic_id = item.Id })
+                        @Html.ActionLink("Show Items", "Index", new { lic_id = item.Id, searchterm = ViewBag.search, page =Model.Licenses.PageNumber } )
                     </td>
                     <td>
-                        @Html.ActionLink("Show Country_list", "Index", new { item_id = item.Id })
+                        @Html.ActionLink("Show Country_list", "Index", new { item_id = item.Id, searchterm = ViewBag.search, page = Model.Licenses.PageNumber })
                     </td>
                 </tr>
             }

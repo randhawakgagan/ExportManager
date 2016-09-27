@@ -40,7 +40,7 @@
         //chcekitem
         var cCheckboxes = new Array();
         $(".chcekc:checked").each(function () {
-            alert($(this).val()); //works fine
+          //  alert($(this).val()); //works fine
             cCheckboxes.push($(this).val());
         });
 
@@ -57,7 +57,7 @@
         //chcekitem
         var itemCheckboxes = new Array();
         $(".chcekitem:checked").each(function () {
-            alert($(this).val()); //works fine
+         //   alert($(this).val()); //works fine
             itemCheckboxes.push($(this).val());
         });
 
@@ -99,8 +99,7 @@
                 position: { my: "center", at: "top+350", of: window },
                 width: 'auto',
                 resizable: false,
-                draggable: true,
-                height:  'auto',
+                draggable: true,              
                 title: 'Add Item',
                 modal: true,
                 async:true,
@@ -113,14 +112,14 @@
                     var link = '@Url.Action("itempartialView", "Export", new {exp_id=-1})';
 
                     link = link.replace('-1', e);
-                    alert(link);
+                //    alert(link);
                     $(this).load(link);
                  //   $(this).load(@Url.Action());
                 },
 
                 close: function (event, ui) {
                     var expId =  $("#mylink").data('id');
-                    alert(expId);
+                //    alert(expId);
 
                     $.post("@Url.Action("GetExpDetails", "Export")?exp_id=" + expId, function (data) {
                         $('#partial').html(data);
@@ -160,9 +159,8 @@
                 position: { my: "center", at: "top+350", of: window },
                 width: 'auto',
                 resizable: false,
-                draggable: true,
-                height: 'auto',
-                title: 'Add country',
+                draggable: true,            
+                title: 'Add Country',
                 modal: true,
                 async: true,
                 open: function () {
@@ -170,18 +168,18 @@
 
                     //    $(self).dialog("close");
                     var e = $("#mylink1").data('id');
-                    alert(e);
+                    //alert(e);
                     var link = '@Url.Action("CpartialView", "Export", new {exp_id=-1})';
 
                     link = link.replace('-1', e);
-                    alert(link);
+                    //alert(link);
                     $(this).load(link);
                     //   $(this).load(@Url.Action());
                 },
 
                 close: function (event, ui) {
                     var expId = $("#mylink1").data('id');
-                    alert(expId);
+                    //alert(expId);
 
                     $.post("@Url.Action("GetCountryDetails", "Export")?exp_id=" + expId, function (data) {
                         $('#partialcountry').html(data);
@@ -312,11 +310,11 @@
                                     </div>
                                 </div>
                                 <div>
-                                    @Html.HiddenFor(model => model.export_val.Id);
+                                    @Html.HiddenFor(model => model.export_val.Id)
                                 </div>
 
                                 <div id="AddUserForm"></div>
-                                <div class="container">
+                                <div  >
                                     <a type="button" id="mylink"
                                        href="#my"
                                        data-toggle="modal"
@@ -359,12 +357,16 @@
                                 <div id="partialcountry">
                                     @Html.Partial("Displaycountry", Model)
                                 </div>
-                                                   <div class="form-group">
+                               
+                                       <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
                                             <input type="submit" id="exp_edit" value="Save"
                                                    class="btn-primary" />
+                                            <button class="btn-xs">    @Html.ActionLink("Cancel", "Details")</button> 
                                         </div>
+           
                                     </div>
+                                
                           </div>
                         </div>
                     @*</div>

@@ -22,8 +22,8 @@
         @Html.AntiForgeryToken()
 
         <div id="item_data">
-            <h4>ITEM ADD</h4>
-
+            <h4>Item Add</h4>
+            <hr />
 
             <div class="form-inline">
 
@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label>
 
-                        No_Units
+                        No.Units
 
                     </label>
                     
@@ -52,7 +52,7 @@
                 <div class="form-group">
                      <label></label> 
                     
-                        <button type="submit"  id="itm_add" class="btn btn-success">Add Item</button>
+                        <button type="submit"  id="itm_add" class="btn btn-success">Add/Update Item</button>
                     
                 </div>
 
@@ -61,7 +61,8 @@
 
         if (Model.Itms_db != null)
         {
-            <h3>ITEMS ADDED</h3>
+            <h4>Added Items</h4>
+            <hr />
             <table class="table table-bordered table-hover" >
                 <tr>
                    

@@ -210,7 +210,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\chartController.cs" />
+    <Compile Include="Controllers\ChartController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -496,7 +496,7 @@
     <Content Include="Views\Licenses\EdititemPartialView.cshtml" />
     <Content Include="Views\Licenses\EditCountryPartialView.cshtml" />
     <Content Include="Views\Notify\NotifyV.cshtml" />
-    <Content Include="Views\chart\Index.cshtml" />
+    <Content Include="Views\Chart\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

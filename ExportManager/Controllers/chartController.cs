@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace ExportManager.Controllers
 {
-    public class chartController : Controller
+    public class ChartController : Controller
     {
         private LicenseManagerEntities db = new LicenseManagerEntities();
         // GET: chart
@@ -70,14 +70,14 @@ namespace ExportManager.Controllers
 
             allSeries.Add(new Series
             {
-                Name = "Export value",
+                Name = "Export Value",
                 // Data = new Data(dataList.ToArray())
                 Data = new Data(dataList2.ToArray())
             });
 
             allSeries.Add(new Series
             {
-                Name = "License value",
+                Name = "License Total Value",
                // Data = new Data(dataList.ToArray())
                Data=new Data(dataList1.ToArray())
             });
@@ -87,12 +87,12 @@ namespace ExportManager.Controllers
             Highcharts chart = new Highcharts("chart")
     .SetCredits(new Credits { Enabled = false })
     .InitChart(new Chart { DefaultSeriesType = ChartTypes.Column })
-    .SetTitle(new Title { Text = "License Export Count" })
+    .SetTitle(new Title { Text = "License Export Value" })
     .SetXAxis(new XAxis { Categories = query.Select( o => o.lic_no).ToArray() })
     .SetYAxis(new YAxis
     {
         Min = 0,
-        Title = new YAxisTitle { Text = "Total Exports" }
+        Title = new YAxisTitle { Text = "Value" }
        
     })
     .SetTooltip(new Tooltip { Formatter = "function() { return ''+ this.series.name +': '+ this.y +''; }" })

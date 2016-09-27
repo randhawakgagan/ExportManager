@@ -45,9 +45,9 @@
 
 
     <form method="get" class="form-group">
-        <input type="search" name="searchterm"/>
+        <input type="search" name="searchterm" placeholder="Search by Ref. No"/>
         <button type="submit" class="btn btn-primary">
-            <span class="glyphicon glyphicon-search"></span> Search by Ref. No
+            <span class="glyphicon glyphicon-search"></span> 
         </button>
         @*<input type="submit"  class ="btn-primary" value="Search by Ref. No "/>*@
     </form>
@@ -102,7 +102,7 @@
                     @{
                         foreach (var course in item.Export_Country)
                         {
-                            @course.Country_Id @:  @course.Country.Name <br />
+                            @course.Country.Name <br />
                     }
                     }
                 </td>
