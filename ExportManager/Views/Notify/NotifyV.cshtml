@@ -18,24 +18,24 @@
 </head>
 <body ng-app="notifyApp">
     <div class="row">
-        <div ng-controller="Notifyctrl" class="col-md-6 col-md-offset-3">
+        <div ng-controller="Notifyctrl as ctrl" class="col-md-6 col-md-offset-3">
             <table class="table table-responsive table-striped">
                 <tr>
                     <th>Email Address</th>
                 </tr>
-                <tr ng-repeat="email in newemail">
+                <tr ng-repeat="email in ctrl.newemail">
                     <td>
                         {{ email.address}}
                     </td>
                     <td>
-                        <button class ="btn-danger"  ng-click="deleteemail($index, email)">Delete</button>
+                        <button class ="btn-danger"  ng-click="ctrl.deleteemail($index, email)">Delete</button>
                     </td>
                 </tr>
 
                
             </table>
             <div >
-                <form novalidate name="emailform" class="form-inline" ng-submit="addemail()">
+                <form novalidate name="emailform" class="form-inline" ng-submit="ctrl.addemail()">
                     <div class="form-group">
                         <label>Enter Email</label>
                         <input type="email" placeholder="enter email" ng-model="emails.address"  name="addr" required ng-minlength="8"/>
@@ -56,7 +56,7 @@
                         <label></label>
                     </div>
                     <div  >
-                        <input type="submit" value="NotifyALL" ng-click="savedata()" class="btn btn-sm btn-success" />
+                        <input type="submit" value="NotifyALL" ng-click="ctrl.savedata()" class="btn btn-sm btn-success" />
                     </div>
                     <div>
                         <i >
@@ -65,7 +65,56 @@
                     </div>
                      </div>
 
-                <table class="table table-responsive table-striped">
+
+                @*<md-content class="md-padding">
+                    <form name="searchForm" ng-submit="$event.preventDefault()">
+                        <div layout-gt-sm="row">
+                            <md-input-container flex="">
+                                <label>Name</label>
+                                <input type="text">
+                            </md-input-container>
+                            <md-autocomplete md-floating-label="Favorite movie"
+                                             flex=""
+                                             md-item-text="item.Title"
+                                             md-items="item in ctrl.data"
+                                             md-search-text-change="ctrl.querySearch(ctrl.searchText)"
+                                             md-search-text="ctrl.searchText"
+                                             md-selected-item="ctrl.selectedItem"
+                                             md-no-cache="ctrl.noCache"
+                                             md-input-maxlength="30"
+                                             md-input-minlength="2"
+                                             md-input-name="autocompleteField"
+                                             required="">
+                                <md-item-template>
+                                    <span md-highlight-text="ctrl.searchText">{{item.Title}}</span>
+                                </md-item-template>
+                                <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
+                                    <div ng-message="required">You <b>must</b> have a favorite movie.</div>
+                                    <div ng-message="minlength">Your entry is not long enough.</div>
+                                    <div ng-message="maxlength">Your entry is too long.</div>
+                                </div>
+                            </md-autocomplete>
+                        </div>
+                    </form>
+                </md-content>*@
+
+                @*Search City : <div class="txtautocomplete" angucomplete-alt id="autocomplete" placeholder="Search City" pause="100" local-data="cities" search-fields="CityName"
+                                   title-field="CityName" minlength="1" input-class="form-control form-control-small" match-class="highlight" override-suggestions="true" clear-selected="true">
+                </div><input />
+                <script>
+    var app = angular.module('mvcapp', ['angucomplete-alt']);
+    app.controller('AngularController', ['$scope', '$http', function ($cityscope, $http) {
+        $http({
+            method: 'GET',
+            url: '/Notify/Getcity'
+        }).then(function (city) {
+            $cityscope.cities = city.data;
+        }, function () {
+            alert('something went wrong!!!');
+        })
+    }]);
+                </script>*@
+                @*<table class="table table-responsive table-striped">
                     <tr>
                         <th>Email Address Added</th>
                         <th></th>
@@ -80,7 +129,7 @@
                     </tr>
 
                     
-                </table>
+                </table>*@
                 
             </div>
         </div>

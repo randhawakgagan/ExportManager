@@ -3,6 +3,7 @@ using DotNet.Highcharts.Enums;
 using DotNet.Highcharts.Helpers;
 using DotNet.Highcharts.Options;
 using ExportManager.DBModel;
+using ExportManager.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,9 @@ namespace ExportManager.Controllers
         // GET: chart
         public ActionResult Index()
         {
+            var model = new chartview();
+            model.Charts= new List<Highcharts>();
+       
             var userId = User.Identity.GetUserId();
             var lic_no = from lic in db.Licenses where lic.UserId == userId select new { licenseNo = lic.License_No, licenseId = lic.Id };
 
@@ -37,6 +41,7 @@ namespace ExportManager.Controllers
             List<object> dataList = new List<object>();
             int i = 0;
 
+            List<Series> allSeries1 = new List<Series>();
             List<Series> allSeries = new List<Series>();
             var lic_arry = lic_no.ToArray();
 
@@ -51,6 +56,13 @@ namespace ExportManager.Controllers
                 dataList.Add(count);
                  
             }
+
+            allSeries1.Add(new Series
+            {
+                Name = "Export Count",
+                // Data = new Data(dataList.ToArray())
+                Data = new Data(dataList.ToArray())
+            });
 
             var query = db.lic_exp_val(userId).ToList();
         //    var lic_val = query.Select(o=>o.l_val).;
@@ -83,8 +95,8 @@ namespace ExportManager.Controllers
             });
 
             var count_exp = exp_count.ToArray();
-
-            Highcharts chart = new Highcharts("chart")
+            
+            Highcharts chart= new Highcharts("chart")
     .SetCredits(new Credits { Enabled = false })
     .InitChart(new Chart { DefaultSeriesType = ChartTypes.Column })
     .SetTitle(new Title { Text = "License Export Value" })
@@ -99,8 +111,23 @@ namespace ExportManager.Controllers
     .SetPlotOptions(new PlotOptions { Bar = new PlotOptionsBar { Stacking = Stackings.Normal } })
     .SetSeries(allSeries.Select(s => new Series { Name = s.Name,Data=s.Data}).ToArray());
 
+            Highcharts chart1 = new Highcharts("chart1")
+    .SetCredits(new Credits { Enabled = false })
+    .InitChart(new Chart { DefaultSeriesType = ChartTypes.Column })
+    .SetTitle(new Title { Text = "License Export Count" })
+    .SetXAxis(new XAxis { Categories = lic_no.Select(o => o.licenseNo).ToArray() })
+    .SetYAxis(new YAxis
+    {
+        Min = 0,
+        Title = new YAxisTitle { Text = "Export Count" }
 
-            return View(chart);
+    })
+    .SetTooltip(new Tooltip { Formatter = "function() { return ''+ this.series.name +': '+ this.y +''; }" })
+    .SetPlotOptions(new PlotOptions { Bar = new PlotOptionsBar { Stacking = Stackings.Normal } })
+    .SetSeries(allSeries1.Select(s => new Series { Name = s.Name, Data = s.Data }).ToArray());
+            model.Charts.Add(chart);
+           model.Charts.Add(chart1);
+            return View(model);
 
            // return View();
         }

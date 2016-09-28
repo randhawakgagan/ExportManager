@@ -13,10 +13,22 @@ namespace ExportManager.Controllers
     {
         public string address { get; set; }
     }
+    public class searchterm
+    {
+        public string search { get; set; }
+    }
+
     public class NotifyController : Controller
     {
         private LicenseManagerEntities db = new LicenseManagerEntities();
 
+
+        public JsonResult Getcity()
+        {
+            var city = (from L in db.Licenses select L.License_No ).ToList();
+            return Json(city, JsonRequestBehavior.AllowGet);
+
+        }
         // GET: Notify
         public ActionResult NotifyV()
         {
@@ -42,6 +54,28 @@ namespace ExportManager.Controllers
             db.Notifies.Remove(found);
             db.SaveChanges();
             return Json(new { success = true });
+        }
+
+        
+
+            public JsonResult GetLicensedata(List<searchterm> search)
+        {
+            var userId = User.Identity.GetUserId();
+            
+            foreach (var search1 in search)
+            {
+               var  lic_no = (from L in db.Licenses where L.UserId == userId && ((search1.search == null) || L.License_No.StartsWith(search1.search)) select new { lic_no = L.License_No });
+                return Json(new { lic_nos = lic_no }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            //if (id != null)
+            //{
+            //    Notify found = db.Notifies.Find(id.Value);
+            //    db.Notifies.Remove(found);
+            //    db.SaveChanges();
+            //}
+
         }
 
         public JsonResult Emails()

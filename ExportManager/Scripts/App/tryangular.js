@@ -4,9 +4,7 @@
 
     var Notifyctrl = function ($scope,$http) {
 
-      //  var data = this;
-       // data.email = "gagan";
-        $scope.data1 = "gagan";
+     
         $scope.newemail = [];
         $scope.emails = {};
        $scope.savedmails = [];
@@ -19,9 +17,24 @@
 
         };
 
-       
+
+
+      //  var self = this;
+    
+        $scope.data = null;
+        $scope.selectedItem = null;
+        $scope.searchText = null;
+    
+        $scope.querySearch = function (query) {
+            $http.get("/Notify/GetLicensedata", {search: escape(query)} )
+              .then(function(result) {
+                  $scope.data = result.data.lic_nos;
+                  return result.data.lic_nos;
+              })
+            };
           //  alert($scope.emails.address);
         var fun = function () {
+
             $http.get("/Notify/Emails").then(function (response) {
                 //    alert(response);
                 // angular.copy(response.emails, $scope.savedmails);
