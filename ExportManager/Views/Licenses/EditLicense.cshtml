@@ -4,50 +4,9 @@
 // Layout = null;
 }
 
-@*<style>
 
 
-.table {
-  margin: 0 0 40px 0;
-  width: 100%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  display: table;
-}
 
-
-.row {
-  display: table-row;
-  background: #f6f6f6;
-}
-.row:nth-of-type(odd) {
-  background: #e9e9e9;
-}
-.row.header {
-  font-weight: 900;
-  color: #ffffff;
-  background: #ea6153;
-}
-.row.green {
-  background: #27ae60;
-}
-.row.blue {
-  background: #2980b9;
-}
-
-
-    
-.cell {
-  padding: 6px 12px;
-  display: table-cell;
-}
-
-</style>*@
-
-@*  <div id="editablePane">
-            @Html.TextBoxFor(s => s., new { @class = "myEditable", disabled = "disabled" })
-            @Html.TextBoxFor(s => s.Height, new { @class = "myEditable", disabled = "disabled" })
-        </div>
-    }*@
 
 <!DOCTYPE html>
 @Scripts.Render("~/bundles/jquery")
@@ -59,17 +18,6 @@
 
 
 <script type="text/javascript">
-
-
-    //$(function () {
-    //    $.ajaxSetup({ cache: false });
-    //    $("a[data-modal]").on("click", function (e) {
-    //        $('#myModalContent').load(this.href, function () {
-    //            $('#myModal').modal('show');
-    //        });
-    //        return false;
-    //    });
-    //});
 
 
     function deletecountry(id) {
@@ -133,11 +81,15 @@
             $("#AddUserForm").dialog({
 
                 autoOpen: false,
-                position: { my: "center", at: "top+350", of: window },
-                width: 'auto',
+                position: { my: "center", at: "center", of: window },
+                maxWidth: 600,
+                maxHeight: 600,
+                width: 300,
+                height: 300,
+               // width: 'auto',
                 resizable: false,
                 draggable: true,
-                height:  'auto',
+               // height:  'auto',
                 title: 'Add Item',
                 modal: true,
                 async:true,
@@ -163,11 +115,6 @@
                         $('#partial').html(data);
                     });
 
-                //    alert("before");
-                  //  $("#AddUserForm").dialog().dialog('close');
-                   // $("#AddUserForm").dialog('close');
-                  //  $("#AddUserForm").dialog('destroy');
-                   // $(this).dialog('destroy').empty();
                 }
 
 
@@ -232,58 +179,7 @@
         });
 
     });
-        @*$(".btn.mylink").on("click", function () {
-            var expId = $(this).data('id');
-            $.post("@Url.Action("GetExpDetails", "Export")?val=" + expId, function (res) {
-                $.each(res.detail, function (i, exp) {
-                    $("#ref_no").val(exp.ref_no);
-                  //  alert(exp.exp_date);
-                    // $("#export_date").val(exp.exp_date);
-                    var dateString = exp.exp_date.substr(6);
-                    var currentTime = new Date(parseInt(dateString));
-                    var month = currentTime.getMonth() + 1;
-                    var day = currentTime.getDate();
-                    var year = currentTime.getFullYear();
-                    var date = month + "/" + day + "/" + year;
-                    $("#export_date").attr('value', date);
-
-                    var dateString1 = exp.lic_date.substr(6);
-                    var currentTime1 = new Date(parseInt(dateString1));
-                    var month1 = currentTime1.getMonth() + 1;
-                    var day1 = currentTime1.getDate();
-                    var year1 = currentTime1.getFullYear();
-                    var date1 = month1 + "/" + day1 + "/" + year1;
-                    $("#expiry_date").val(date1);
-                    $("#expiry_date").prop('disabled',true);
-                    $("#lic_no").val(exp.lic_no);
-                    $("#lic_no").prop('disabled', true);
-                    //$("#").val(data.Year.toString() + "-" +
-                    //                   ("00" + data.Month.toString()).slice(-2));
-
-
-
-                });
-
-
-                var row = "";
-                $.each(res.items, function (i, item) {
-                    row += "<tr><td>" + item.item_name + "</td><td>" + item.units + "</td></tr>";
-                });
-                $("#contacts").html(row);
-                //$.each(res.items, function (i, item) {
-                //    var user = '<tr class="success">' +'<td>' + item.item_name + '</td>' + '<td>'+ item.units + '</td>' +
-                //   " <a type="button" class="btn mylink" href="#article-editor"
-                //    data-toggle="modal"
-                //    data-id= '+item.id+'>edit</a>" +'</tr>';
-
-                //    $('#items_table').append(user);
-                //});
-            });
-        });
-
-
-
-    *@
+       
 </script>
 
 <html>
@@ -295,16 +191,7 @@
     <div id="my"></div>
     @using (Html.BeginForm("Saveedit", "Licenses"))
     {
-        @*<div class="modal fade in" id="article-editor">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <a class="close" data-dismiss="modal">&times;</a>
-                        <h3>Title of the form</h3>
-                    </div>
-
-
-                    <div class="modal-body">*@
+        
 
         <div class="form-horizontal">
             <h4>License</h4>
@@ -396,15 +283,7 @@
             </div>
         </div>
     </div>
-                        @*</div>
-
-                                        <div class="modal-footer">
-                                            <a href="#" class="btn" data-dismiss="modal">Close</a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>*@
+                       
     }
 </body>
 </html>
