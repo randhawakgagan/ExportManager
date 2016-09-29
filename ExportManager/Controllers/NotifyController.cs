@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ExportManager.Controllers
 {
-   
+
     public class emaillist
     {
         public string address { get; set; }
@@ -17,7 +17,7 @@ namespace ExportManager.Controllers
     public class emaildata
     {
         public List<emaillist> email { get; set; }
-       public int lic_id { get; set; }
+        public int lic_id { get; set; }
     }
 
     public class emaildelete
@@ -31,7 +31,7 @@ namespace ExportManager.Controllers
     }
     public class emailadd
     {
-        public int lic_id { get; set; } 
+        public int lic_id { get; set; }
     }
 
     public class NotifyController : Controller
@@ -39,7 +39,7 @@ namespace ExportManager.Controllers
         private LicenseManagerEntities db = new LicenseManagerEntities();
 
 
-    
+
         // GET: Notify
         public ActionResult NotifyV()
         {
@@ -55,12 +55,12 @@ namespace ExportManager.Controllers
             return View();
         }
 
-        
-             public JsonResult DeleteEmail(emaildelete data)
+
+        public JsonResult DeleteEmail(emaildelete data)
         {
-            
+
             var userId = User.Identity.GetUserId();
-            var email_id = from email in db.Notifies where email.UserId == userId && email.Email_Id == data.email && email.LicenseId==data.lic_id select email;
+            var email_id = from email in db.Notifies where email.UserId == userId && email.Email_Id == data.email && email.LicenseId == data.lic_id select email;
             Notify found = db.Notifies.Find(email_id.FirstOrDefault().Id);
             db.Notifies.Remove(found);
             db.SaveChanges();
@@ -73,10 +73,10 @@ namespace ExportManager.Controllers
         public JsonResult GetLicensedata()
         {
             var userId = User.Identity.GetUserId();
-            
-         //   foreach (var search1 in search)
+
+            //   foreach (var search1 in search)
             {
-               var  lic_no = (from L in db.Licenses where L.UserId == userId select new { lic_no = L.License_No ,lic_id=L.Id});
+                var lic_no = (from L in db.Licenses where L.UserId == userId select new { lic_no = L.License_No, lic_id = L.Id });
                 return Json(new { lic_nos = lic_no }, JsonRequestBehavior.AllowGet);
             }
 
@@ -92,7 +92,7 @@ namespace ExportManager.Controllers
 
         public JsonResult Emails(int? lic_id)
         {
-           // if (lic_id.lic_id != null)
+            // if (lic_id.lic_id != null)
             {
                 var userId = User.Identity.GetUserId();
                 var email_list = (from emil in db.Notifies where emil.UserId == userId && emil.LicenseId == lic_id.Value select new { Emailid = emil.Email_Id });
@@ -116,14 +116,14 @@ namespace ExportManager.Controllers
             foreach (var addr in list_addr)
             {
                 emailadd.UserId = userId;
-                var emailtoadd=addr.address;
+                var emailtoadd = addr.address;
                 emailadd.Email_Id = emailtoadd;
                 emailadd.LicenseId = lic_id;
                 db.Notifies.Add(emailadd);
                 db.SaveChanges();
             }
 
-            return Json(new { success=true});
+            return Json(new { success = true });
         }
     }
 }

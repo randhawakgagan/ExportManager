@@ -19,7 +19,7 @@ namespace ExportManager.Controllers
     {
         private LicenseManagerEntities db = new LicenseManagerEntities();
 
-        // GET: Licenses
+        
         public ActionResult Index(int? lic_id, int? item_id, string searchterm = null, int page = 1)
         {
 
@@ -33,7 +33,7 @@ namespace ExportManager.Controllers
             var ids = lic_ids.ToList();
             model.Licenses = db.Licenses.Where(r => ((searchterm == null || r.License_No.Contains(searchterm)) && (ids.Contains(r.Id)))).Include(i => i.License_Country.Select(z => z.Country)).Include(y => y.License_Item.Select(p => p.Item)).OrderBy(u => u.License_No).ToPagedList(page, 4);
 
-            //model.exp_item= model.exports.Include(y => y.Item);
+           
             if (lic_id != null)
             {
                 var items = db.Licenses.Where(x => x.Id == lic_id.Value).Include(z => z.License_Item.Select(y => y.Item));
@@ -54,50 +54,7 @@ namespace ExportManager.Controllers
 
 
             }
-            //List<Viewlicensecountryitem> model = new List<Viewlicensecountryitem>();
-
-            //StringBuilder item_name = new StringBuilder();
-
-            //var id = from a in db.Licenses select a;
-            //foreach(var i in id)
-            //{
-            //    Viewlicensecountryitem list_view = new Viewlicensecountryitem();
-            //    list_view.allLicense = i;
-
-            //    var query =
-            //   from itm in db.Items
-            //   join lic in db.License_Item on itm.Id equals lic.Item_Id
-            //   where lic.License_Id == i.Id
-            //   select new { name= itm.Name };
-
-            //    foreach (var n in query)
-            //    {
-            //        item_name.Append(n.name);
-            //        item_name.Append(",");
-            //    }
-
-
-            //    list_view.allItems = item_name.ToString();
-            //    item_name.Clear();
-
-            //    var query1 =
-            //    from itm in db.Countries
-            //    join lic in db.License_Country on itm.Id equals lic.Country_Id
-            //    where lic.License_Id== i.Id
-            //    select new { name = itm.Name };
-
-            //    foreach (var n in query1)
-            //    {
-            //        item_name.Append(n.name);
-            //        item_name.Append(",");
-            //    }
-
-
-            //    list_view.allCountry = item_name.ToString();
-            //    model.Add(list_view);
-            //    item_name.Clear();
-
-            //}
+           
 
 
             return View(model);
@@ -214,6 +171,7 @@ namespace ExportManager.Controllers
 
             TempData["id"] = Lic_id.Value;
             LicenseEditView model = new LicenseEditView();
+
             model.item = db.Licenses.Where(z => z.Id == Lic_id.Value).Include(x => x.License_Item.Select(y => y.Item));
 
             var item_list =
@@ -222,11 +180,11 @@ namespace ExportManager.Controllers
               where lic.License_Id == Lic_id.Value
               select itm;
 
-
+           
             //  model.Items= new SelectListItem(item_list.ToList(), "Id", "Name")
 
             model.Items =
-             item_list.Select(x => new SelectListItem
+             db.Items.Select(x => new SelectListItem
              {
                  Value = x.Id.ToString(),
                  Text = x.Name,
@@ -236,10 +194,7 @@ namespace ExportManager.Controllers
             model.SelectedItems = db.Items.Select(x => x.Id);
 
 
-            // db.SaveChanges();
-
-            //  return View(model);
-            //return RedirectToAction("GetExpDetails",new { exp_id = exp_id.Value });
+           
             return PartialView("EdititemPartialView", model);
         }
 
@@ -257,13 +212,13 @@ namespace ExportManager.Controllers
              from itm in db.Countries
              join lic in db.License_Country on itm.Id equals lic.Country_Id
              where lic.License_Id == Lic_id.Value
-              select itm;
+             select itm;
 
             model.Lic_id = Lic_id.Value;
             //  model.Items= new SelectListItem(item_list.ToList(), "Id", "Name")
 
             model.Items =
-             item_list.Select(x => new SelectListItem
+             db.Countries.Select(x => new SelectListItem
              {
                  Value = x.Id.ToString(),
                  Text = x.Name,
@@ -274,13 +229,10 @@ namespace ExportManager.Controllers
 
 
 
-         
 
 
-            // db.SaveChanges();
 
-            //  return View(model);
-            //return RedirectToAction("GetExpDetails",new { exp_id = exp_id.Value });
+          
             return PartialView("EditCountryPartialView", model);
         }
 
@@ -288,31 +240,19 @@ namespace ExportManager.Controllers
         {
 
             var model = new LicenseEditView();
-            //model.exports = db.Exports.Where(r => searchterm == null || r.Reference_No.StartsWith(searchterm)).Include(k => k.License).
-            //     Include(i => i.Export_Country.Select(z => z.Country)).Include(y => y.Export_Item.Select(p => p.Item)).OrderBy(u => u.Reference_No).ToPagedList(page, 4);
-
-            // model.msg = msg;
+            if(Lic_id==null)
+            { return Content("lic not found "); }
             model.Lic_details = db.Licenses.Where(x => x.Id == Lic_id.Value).Single();
 
 
             var items = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Item.Select(y => y.Item));
 
             model.item = items;
-            //    ViewBag.t_id = exp_id.Value;
-
-
-            //}
-            //if (item_id != null)
-            //{
+            
             var country = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Country.Select(y => y.Country));
 
             model.country = country;
-            //    ViewBag.c_id = item_id.Value;
-
-
-
-            //}
-
+            
 
             return PartialView("LicCounEdit", model);
         }
@@ -320,45 +260,32 @@ namespace ExportManager.Controllers
         public ActionResult GetitemDetails(int? Lic_id)
         {
 
-             var model = new LicenseEditView();
-        //model.exports = db.Exports.Where(r => searchterm == null || r.Reference_No.StartsWith(searchterm)).Include(k => k.License).
-        //     Include(i => i.Export_Country.Select(z => z.Country)).Include(y => y.Export_Item.Select(p => p.Item)).OrderBy(u => u.Reference_No).ToPagedList(page, 4);
+            var model = new LicenseEditView();
+            
+            if(Lic_id==null)
+                return Content("lic not found ");
 
-       // model.msg = msg;
             model.Lic_details = db.Licenses.Where(x => x.Id == Lic_id.Value).Single();
 
 
-        var items = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Item.Select(y => y.Item));
+            var items = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Item.Select(y => y.Item));
 
-        model.item = items;
-            //    ViewBag.t_id = exp_id.Value;
+            model.item = items;
+           
+            var country = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Country.Select(y => y.Country));
 
-    
-    //}
-    //if (item_id != null)
-    //{
-    var country = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Country.Select(y => y.Country));
-
-    model.country= country;
-            //    ViewBag.c_id = item_id.Value;
-
-
-
-            //}
-
+            model.country = country;
+            
 
             return PartialView("LicItemEdit", model);
         }
-    public JsonResult Additem(LicenseEditView Licvalues)
+        public JsonResult Additem(LicenseEditView Licvalues)
         {
-            // int exp_id = Convert.ToInt32(TempData["id"]);
-            // TempData["id"] = exp_id.Value;
+           
             var lic_id = Licvalues.Lic_id;
             ViewExportAdd model = new ViewExportAdd();
-         //   Export_view view = new Export_view();
-            //model.exp_item = db.Exports.Where(z => z.Id == exp_id).Include(x => x.Export_Item.Select(y => y.Item));
-          //  var lic_id = db.Exports.Where(z => z.Id == exp_id).Include(x => x.License).Single();
-            if (Licvalues.SelectedCountries!= null)
+           
+            if (Licvalues.SelectedCountries != null)
             {
                 foreach (var i in Licvalues.SelectedCountries)
                 {
@@ -427,15 +354,7 @@ namespace ExportManager.Controllers
 
 
             model.lic_id = lic_id;
-            //  model.Items= new SelectListItem(item_list.ToList(), "Id", "Name")
-
-
-
-
-            // db.SaveChanges();
-            // return PartialView("EdititemPartialView", model);
-            // return View(model);
-            //   return RedirectToAction("GetExpDetails", new { exp_id = exp_id.Value, msg = "item added" });
+           
             return Json(new { msg = model.msg }, JsonRequestBehavior.AllowGet);
         }
 
@@ -448,7 +367,7 @@ namespace ExportManager.Controllers
 
                 lic_change.First().License_No = values.Lic_details.License_No;
                 lic_change.First().Expiry_Date = values.Lic_details.Expiry_Date;
-                lic_change.First().Notes= values.Lic_details.Notes;
+                lic_change.First().Notes = values.Lic_details.Notes;
                 db.SaveChanges();
 
             }
@@ -459,22 +378,13 @@ namespace ExportManager.Controllers
         public ActionResult Deleteitem(int? Lic_id, List<int> itemCheckedIds, List<int> countryCheckboxes)
         {
             var model = new LicenseEditView();
-            //model.exports = db.Exports.Where(r => searchterm == null || r.Reference_No.StartsWith(searchterm)).Include(k => k.License).
-            //     Include(i => i.Export_Country.Select(z => z.Country)).Include(y => y.Export_Item.Select(p => p.Item)).OrderBy(u => u.Reference_No).ToPagedList(page, 4);
-
-            // model.msg = msg;
+            if(Lic_id==null)
+            return Content("lic not found ");
             model.Lic_details = db.Licenses.Where(x => x.Id == Lic_id.Value).Single();
 
 
-            
-            //    ViewBag.t_id = exp_id.Value;
 
 
-            //}
-            //if (item_id != null)
-            //{
-           
-           
             if (itemCheckedIds != null)
             {
                 foreach (var itm_id in itemCheckedIds)
@@ -501,7 +411,7 @@ namespace ExportManager.Controllers
                 var country = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Country.Select(y => y.Country));
 
                 model.country = country;
-              
+
 
                 return PartialView("LicCounEdit", model);
             }
@@ -511,16 +421,15 @@ namespace ExportManager.Controllers
         public ActionResult EditLicense(int? Lic_id, string msg)
         {
 
-           
+            if (Lic_id == null)
+                return Content("lic not found ");
             var model = new LicenseEditView();
-            //model.exports = db.Exports.Where(r => searchterm == null || r.Reference_No.StartsWith(searchterm)).Include(k => k.License).
-            //     Include(i => i.Export_Country.Select(z => z.Country)).Include(y => y.Export_Item.Select(p => p.Item)).OrderBy(u => u.Reference_No).ToPagedList(page, 4);
-
+            
             model.msg = msg;
             model.Lic_details = db.Licenses.Where(x => x.Id == Lic_id.Value).Single();
-           
 
-            var items = db.Licenses.Where(x => x.Id ==Lic_id .Value).Include(z => z.License_Item.Select(y => y.Item));
+
+            var items = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Item.Select(y => y.Item));
 
             model.item = items;
             //    ViewBag.t_id = exp_id.Value;
@@ -529,34 +438,16 @@ namespace ExportManager.Controllers
             {
                 return PartialView("Itemdisplay", model);
             }
-            //}
-            //if (item_id != null)
-            //{
+          
             var country = db.Licenses.Where(x => x.Id == Lic_id.Value).Include(z => z.License_Country.Select(y => y.Country));
 
-            model.country= country;
-            //    ViewBag.c_id = item_id.Value;
+            model.country = country;
+            
 
-
-
-            //}
 
 
             return View(model);
-            //var country_list =
-            //from country in db.Countries
-            //join lic in db.License_Country on country.Id equals lic.Country_Id
-            //where lic.License_Id == val
-            //select new { country_id = country.Id, country_name = country.Name };
-
-            //var lic_details = from l in db.Licenses where l.Id == val select new { expiry_date = l.Expiry_Date, notes = l.Notes };
-
-            //var CountryList = country_list.ToList();
-
-            //var res = new { detail=exp_detail,items= item_list };
-            ////   return Json(countryDTOList, JsonRequestBehavior.AllowGet);
-
-            //return this.Json(res, JsonRequestBehavior.AllowGet);
+           
 
 
         }

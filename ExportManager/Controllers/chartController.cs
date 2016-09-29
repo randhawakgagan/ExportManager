@@ -20,12 +20,12 @@ namespace ExportManager.Controllers
         public ActionResult Index()
         {
             var model = new chartview();
-            model.Charts= new List<Highcharts>();
-       
+            model.Charts = new List<Highcharts>();
+
             var userId = User.Identity.GetUserId();
             var lic_no = from lic in db.Licenses where lic.UserId == userId select new { licenseNo = lic.License_No, licenseId = lic.Id };
 
-            var lic_ids = (from lic in db.Licenses where lic.UserId == userId select lic.Id).ToList() ;
+            var lic_ids = (from lic in db.Licenses where lic.UserId == userId select lic.Id).ToList();
             var exp_count = from lic_exp in db.Exports
                             where lic_ids.Contains(lic_exp.License_Id.Value)
                             group lic_exp by lic_exp.License_Id into g
@@ -34,8 +34,8 @@ namespace ExportManager.Controllers
             new
             {
                 lic_code = g.Key,
-              //  item_value = g.First().,
-                total = g.Count() 
+                //  item_value = g.First().,
+                total = g.Count()
             };
             //
             List<object> dataList = new List<object>();
@@ -54,7 +54,7 @@ namespace ExportManager.Controllers
                     count = licenseId_ExportCount_Dictionary[item.licenseId];
                 }
                 dataList.Add(count);
-                 
+
             }
 
             allSeries1.Add(new Series
@@ -65,7 +65,7 @@ namespace ExportManager.Controllers
             });
 
             var query = db.lic_exp_val(userId).ToList();
-        //    var lic_val = query.Select(o=>o.l_val).;
+            //    var lic_val = query.Select(o=>o.l_val).;
             List<object> dataList1 = new List<object>();
             foreach (var item in query)
             {
@@ -90,26 +90,26 @@ namespace ExportManager.Controllers
             allSeries.Add(new Series
             {
                 Name = "License Total Value",
-               // Data = new Data(dataList.ToArray())
-               Data=new Data(dataList1.ToArray())
+                // Data = new Data(dataList.ToArray())
+                Data = new Data(dataList1.ToArray())
             });
 
             var count_exp = exp_count.ToArray();
-            
-            Highcharts chart= new Highcharts("chart")
+
+            Highcharts chart = new Highcharts("chart")
     .SetCredits(new Credits { Enabled = false })
     .InitChart(new Chart { DefaultSeriesType = ChartTypes.Column })
     .SetTitle(new Title { Text = "License Export Value" })
-    .SetXAxis(new XAxis { Categories = query.Select( o => o.lic_no).ToArray() })
+    .SetXAxis(new XAxis { Categories = query.Select(o => o.lic_no).ToArray() })
     .SetYAxis(new YAxis
     {
         Min = 0,
         Title = new YAxisTitle { Text = "Value" }
-       
+
     })
     .SetTooltip(new Tooltip { Formatter = "function() { return ''+ this.series.name +': '+ this.y +''; }" })
     .SetPlotOptions(new PlotOptions { Bar = new PlotOptionsBar { Stacking = Stackings.Normal } })
-    .SetSeries(allSeries.Select(s => new Series { Name = s.Name,Data=s.Data}).ToArray());
+    .SetSeries(allSeries.Select(s => new Series { Name = s.Name, Data = s.Data }).ToArray());
 
             Highcharts chart1 = new Highcharts("chart1")
     .SetCredits(new Credits { Enabled = false })
@@ -126,10 +126,10 @@ namespace ExportManager.Controllers
     .SetPlotOptions(new PlotOptions { Bar = new PlotOptionsBar { Stacking = Stackings.Normal } })
     .SetSeries(allSeries1.Select(s => new Series { Name = s.Name, Data = s.Data }).ToArray());
             model.Charts.Add(chart);
-           model.Charts.Add(chart1);
+            model.Charts.Add(chart1);
             return View(model);
 
-           // return View();
+            // return View();
         }
     }
 }
