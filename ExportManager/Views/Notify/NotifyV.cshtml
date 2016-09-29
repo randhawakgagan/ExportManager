@@ -4,165 +4,171 @@
     //Layout = null;
 }
 
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
 @section scripts {
+
     @Scripts.Render("~/Scripts/angular.js")
     @Scripts.Render("~/Scripts/App/module.js")
     @Scripts.Render("~/Scripts/App/tryangular.js")
 }
+
+<style>
+    .table td, .table th {
+    border: none;
+}
+
+table.table.table-condensed {
+    border: 1px solid black;
+}
+
+</style>
+
+<script>
+    $(function () {
+        var i = 0;
+        var availableTags = new Array();
+        $.post("@Url.Action("GetLicensedata", "Notify")", function (data) {
+            $.each(data.lic_nos, function (i, lic_no) {
+                //availableTags.push(lic_no.lic_no);
+                availableTags[i] = { label: lic_no.lic_no, Id: lic_no.lic_id };
+                i++;
+                
+            })
+            
+           // alert(availableTags);
+            $("#tags").autocomplete({
+                source: availableTags,
+                select: function (event, ui) {
+
+                    var lic_no = ui.item.Id;
+
+                    alert(lic_no);
+                    $("#lic_no").val(lic_no).trigger("change");
+
+                }
+            });
+
+
+        });
+    
+  
+  } );
+</script>
 <!DOCTYPE html>
+
+
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>View</title>
 </head>
-<body ng-app="notifyApp">
-    <div class="row">
-        <div ng-controller="Notifyctrl as ctrl" class="col-md-6 col-md-offset-3">
-            <table class="table table-responsive table-striped">
-                <tr>
-                    <th>Email Address</th>
-                </tr>
-                <tr ng-repeat="email in ctrl.newemail">
-                    <td>
-                        {{ email.address}}
-                    </td>
-                    <td>
-                        <button class ="btn-danger"  ng-click="ctrl.deleteemail($index, email)">Delete</button>
-                    </td>
-                </tr>
 
-               
-            </table>
-            <div >
-                <form novalidate name="emailform" class="form-inline" ng-submit="ctrl.addemail()">
-                    <div class="form-group">
-                        <label>Enter Email</label>
-                        <input type="email" placeholder="enter email" ng-model="emails.address"  name="addr" required ng-minlength="8"/>
-                        
-                    </div>
+        <body ng-app="notifyApp">
+            
+           <div>
 
-                    <div class="form-group ">
-                        <input type="submit" value="ADD" class="btn btn-sm btn-info" ng-disabled="emailform.$invalid"/>
+               <h4>Email Notify</h4>
+               <hr />
 
-                    </div>
-                      
+           </div> 
+       <div class="panel panel-info">
+    <div class="panel-heading">Notification</div>
+    <div class="panel-body">
 
-                </form>
-               
-                <div class="col-md-6 col-md-offset-3 form-group">
-                    <div>
-                        <span ng-show="emailform.addr.$error.minlength" class="text-danger">required min length 8</span>
-                        <label></label>
-                    </div>
-                    <div  >
-                        <input type="submit" value="NotifyALL" ng-click="ctrl.savedata()" class="btn btn-sm btn-success" />
-                    </div>
-                    <div>
-                        <i >
-
-                        </i>
-                    </div>
-                     </div>
-
-
-                @*<md-content class="md-padding">
-                    <form name="searchForm" ng-submit="$event.preventDefault()">
-                        <div layout-gt-sm="row">
-                            <md-input-container flex="">
-                                <label>Name</label>
-                                <input type="text">
-                            </md-input-container>
-                            <md-autocomplete md-floating-label="Favorite movie"
-                                             flex=""
-                                             md-item-text="item.Title"
-                                             md-items="item in ctrl.data"
-                                             md-search-text-change="ctrl.querySearch(ctrl.searchText)"
-                                             md-search-text="ctrl.searchText"
-                                             md-selected-item="ctrl.selectedItem"
-                                             md-no-cache="ctrl.noCache"
-                                             md-input-maxlength="30"
-                                             md-input-minlength="2"
-                                             md-input-name="autocompleteField"
-                                             required="">
-                                <md-item-template>
-                                    <span md-highlight-text="ctrl.searchText">{{item.Title}}</span>
-                                </md-item-template>
-                                <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
-                                    <div ng-message="required">You <b>must</b> have a favorite movie.</div>
-                                    <div ng-message="minlength">Your entry is not long enough.</div>
-                                    <div ng-message="maxlength">Your entry is too long.</div>
-                                </div>
-                            </md-autocomplete>
-                        </div>
-                    </form>
-                </md-content>*@
-
-                @*Search City : <div class="txtautocomplete" angucomplete-alt id="autocomplete" placeholder="Search City" pause="100" local-data="cities" search-fields="CityName"
-                                   title-field="CityName" minlength="1" input-class="form-control form-control-small" match-class="highlight" override-suggestions="true" clear-selected="true">
-                </div><input />
-                <script>
-    var app = angular.module('mvcapp', ['angucomplete-alt']);
-    app.controller('AngularController', ['$scope', '$http', function ($cityscope, $http) {
-        $http({
-            method: 'GET',
-            url: '/Notify/Getcity'
-        }).then(function (city) {
-            $cityscope.cities = city.data;
-        }, function () {
-            alert('something went wrong!!!');
-        })
-    }]);
-                </script>*@
-                @*<table class="table table-responsive table-striped">
-                    <tr>
-                        <th>Email Address Added</th>
-                        <th></th>
-                    </tr>
-                    <tr ng-repeat="email in mails">
-                        <td>
-                            {{ email.Emailid}}
-                        </td>
-                        <td>
-                            <button class="btn-danger" ng-click="deleteServeremail($index, email.Emailid)">Delete</button>
-                        </td>
-                    </tr>
-
+            <div class="table">
+                <div ng-controller="Notifyctrl " class="col-md-6 col-md-offset-3">
                     
-                </table>*@
-                
-            </div>
+                    <div>
+
+
+                        <div class="form-group">
+                            <div class="ui-widget">
+                                <label for="tags">Search License: </label>
+                                <input id="tags" />
+                            </div>
+                           
+                        </div>
+                       
+                        <form novalidate name="emailform" class="form-inline" ng-submit="addemail()">
+                           
+                            <input type="text" id="lic_no" hidden="hidden" ng-model="lic_no" ng-model-options="{ updateOn: 'change' }" ng-change="fun()" />
+                            @*<div>{{lic_no}} </div>*@
+                            <div class="form-group">
+                                <label>Enter Email</label>
+                                <input type="email" placeholder="enter email" ng-model="emails.address" name="addr" required ng-minlength="8" />
+
+                            </div>
+
+                            <div class="form-group ">
+                                <input type="submit" value="ADD" class="btn btn-sm btn-info" ng-disabled="emailform.$invalid" />
+
+                            </div>
+
+                            <div class="form-group" >
+                                <table  class="table table-condensed" ng-show="isemail">
+                                    <tr>
+                                        <th>Email Address to Add</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr ng-repeat="email in newemail">
+                                        <td>
+                                            {{ email.address}}
+                                        </td>
+                                        <td>
+                                            <button class="btn-link" ng-click="deleteemail($index, email)">Delete</button>
+                                        </td>
+                                    </tr>
+
+
+                                </table>
+                            </div>
+                            <div class="col-md-6 col-md-offset-3 form-group">
+                                <input type="submit" value="NotifyALL" ng-click="savedata()" class="btn btn-sm btn-success" />
+                            </div>
+
+                        </form>
+                        <div class="col-md-6 col-md-offset-3 form-group">
+                            <div>
+                                <span ng-show="emailform.addr.$error.minlength" class="text-danger">required min length 8</span>
+                                <label></label>
+                            </div>
+                        
+
+                        </div>
+
+                        @*<textarea ng-model="items" rows="row"></textarea>*@
+
+                        
+
+                        
+                          <table class="table table-responsive table-striped" ng-show="isdata">
+                        <tr>
+                            <th>Email Address Added</th>
+                            <th></th>
+                        </tr>
+                        <tr ng-repeat="email in mails">
+                            <td>
+                                {{ email.Emailid}}
+                            </td>
+                            <td>
+                                <button class="btn-link" ng-click="deleteServeremail($index, email.Emailid)">Delete</button>
+                            </td>
+                        </tr>
+
+
+                    </table>
+
+                            </div>
+                        </div>
+                    </div>
         </div>
+
+           
     </div>
 
-    @*@if (Model != null)
-    {
-    <h3>Emails Added</h3>
-    <table class="table">
-        <tr>
+        </body>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Email_Id)
-            </th>
-         
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email_Id)
-                </td>
-               
-                <td>
-                   
-                    @Html.ActionLink("Delete", "NotifyV", new { id = item.Id })
-                </td>
-            </tr>
-        }
-
-    </table>
-    }*@
-</body>
 </html>

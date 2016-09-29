@@ -142,69 +142,75 @@
 
         @Html.AntiForgeryToken()
 
+
         <div class="form-horizontal">
             <h4>Export</h4>
             <hr />
-            <div class="table">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel panel-info">
+                <div class="panel-heading">Add Export</div>
+                <div class="panel-body">
+                    <div class="table">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <div class="form-group">
-                    <label class="control-label col-md-2">Select License</label>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(s => s.Selectedlicense, Model.LicenseNos, "Select")
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Select License</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(s => s.Selectedlicense, Model.LicenseNos, "Select")
 
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Choose Countries</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(s => s.Selectedcountrylist, new SelectList(string.Empty, "Value", "Text"), "Select")
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Export.Reference_No, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Export.Reference_No, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Export.Reference_No, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Export.Export_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @Html.EditorFor(model => model.Export.Export_Date, new { htmlAttributes = new { @class = "form-control", id = "Export_Date" } })
+
+                                @Html.ValidationMessageFor(model => model.Export.Export_Date, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LicenseDetails.Expiry_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @Html.EditorFor(model => model.Expiry_Date, new { htmlAttributes = new { @class = "form-control", id = "expiry_date", @Value = @Model.Expiry_Date.ToString("yyyy-MM-dd"), disabled = true } })
+
+                                @Html.ValidationMessageFor(model => model.Expiry_Date, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" id="lic_create" value="Export Items"
+                                       class="btn-primary" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-2">Choose Countries</label>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(s => s.Selectedcountrylist, new SelectList(string.Empty, "Value", "Text"), "Select")
-
-
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Export.Reference_No, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Export.Reference_No, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Export.Reference_No, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Export.Export_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-
-                        @Html.EditorFor(model => model.Export.Export_Date, new { htmlAttributes = new { @class = "form-control", id = "Export_Date" } })
-
-                        @Html.ValidationMessageFor(model => model.Export.Export_Date, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LicenseDetails.Expiry_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-
-                        @Html.EditorFor(model => model.Expiry_Date, new { htmlAttributes = new { @class = "form-control", id = "expiry_date", @Value = @Model.Expiry_Date.ToString("yyyy-MM-dd"), disabled = true } })
-
-                        @Html.ValidationMessageFor(model => model.Expiry_Date, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" id="lic_create" value="Export Items"
-                               class="btn-primary" />
-                    </div>
                 </div>
             </div>
-        </div>
-    }
-    <div>
-        @Html.ActionLink("Back to List", "Details")
-    </div>
+                }
+                <div>
+                    @Html.ActionLink("Back to List", "Details")
+                </div>
 </body>
 </html>

@@ -94,27 +94,30 @@ namespace ExportManager.Controllers
 
                 TempData["Lic"] = license_id;
                 // int val = Convert.ToInt32(license_id.FirstOrDefault());
-                foreach (var i in licenseadd.SelectedItems)
+                if (licenseadd.SelectedItems != null)
                 {
-                    var items_add = new License_Item();
-                    var item_found = from itm in db.License_Item where itm.Item_Id == i && itm.License_Id == license_id select itm;
-                    if (!item_found.Any())
+                    foreach (var i in licenseadd.SelectedItems)
                     {
-                        items_add.Item_Id = i;
+                        var items_add = new License_Item();
+                        var item_found = from itm in db.License_Item where itm.Item_Id == i && itm.License_Id == license_id select itm;
+                        if (!item_found.Any())
+                        {
+                            items_add.Item_Id = i;
 
-                        items_add.License_Id = license_id;
-                        items_add.No_Units = licenseadd.No_Units;
-                        db.License_Item.Add(items_add);
+                            items_add.License_Id = license_id;
+                            items_add.No_Units = licenseadd.No_Units;
+                            db.License_Item.Add(items_add);
+                        }
+                        else
+                        {
+
+                            item_found.FirstOrDefault().No_Units = licenseadd.No_Units;
+
+
+                        }
                     }
-                    else
-                    {
-
-                        item_found.FirstOrDefault().No_Units= licenseadd.No_Units;
-
-
-                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
                 var item_names =
                 from itm in db.Items
                 join lic in db.License_Item on itm.Id equals lic.Item_Id
@@ -128,10 +131,7 @@ namespace ExportManager.Controllers
 
 
                 var name_unit = item_names.ToList().Zip(item_units.ToList(), (n, w) => new { name = n, units = w });
-                //var item_units = new item_units();
-                //item_units.Itm_No_Units=
-                //licenseadd.Itms_db
-                //  LicenseAdd licenseadd = new LicenseAdd();
+               
                 licenseadd.Itms_db = new List<item_units>();
                 foreach (var n in name_unit.ToList())
                 {

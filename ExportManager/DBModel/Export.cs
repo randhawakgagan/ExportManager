@@ -11,8 +11,7 @@ namespace ExportManager.DBModel
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Export
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,8 +23,6 @@ namespace ExportManager.DBModel
     
         public int Id { get; set; }
         public string Reference_No { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy - MM - dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Export_Date { get; set; }
         public Nullable<int> License_Id { get; set; }
     

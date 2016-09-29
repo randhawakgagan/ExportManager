@@ -141,6 +141,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Email_Id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserId" Type="nvarchar(max)" />
+          <Property Name="LicenseId" Type="int" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -545,6 +546,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Email_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LicenseId" Type="Int32" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -911,6 +913,7 @@
           <EntitySetMapping Name="Notifies">
             <EntityTypeMapping TypeName="LicenseManagerModel.Notify">
               <MappingFragment StoreEntitySet="Notify">
+                <ScalarProperty Name="LicenseId" ColumnName="LicenseId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />

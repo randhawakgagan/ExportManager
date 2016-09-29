@@ -1,63 +1,85 @@
-﻿angular.module( "ngAutocomplete", [])
-  .directive('ngAutocomplete', function($parse) {
-    return {
+﻿(function () {
+    'use strict';
+    angular
+        .module('autocompleteDemo', ['ngMaterial'])
+        .controller('DemoCtrl', DemoCtrl);
 
-      scope: {
-        details: '=',
-        ngAutocomplete: '=',
-        options: '='
-      },
+    function DemoCtrl($timeout, $q, $log) {
+        var self = this;
 
-      link: function(scope, element, attrs, model) {
+        self.simulateQuery = false;
+        self.isDisabled = false;
 
-        //options for autocomplete
-        var opts
+        // list of `state` value/display objects
+        self.states = loadAll();
+        self.querySearch = querySearch;
+        self.selectedItemChange = selectedItemChange;
+        self.searchTextChange = searchTextChange;
 
-        //convert options provided to opts
-        var initOpts = function() {
-          opts = {}
-          if (scope.options) {
-            if (scope.options.types) {
-              opts.types = []
-              opts.types.push(scope.options.types)
-            }
-            if (scope.options.bounds) {
-              opts.bounds = scope.options.bounds
-            }
-            if (scope.options.country) {
-              opts.componentRestrictions = {
-                country: scope.options.country
-              }
-            }
-          }
+        self.newState = newState;
+
+        function newState(state) {
+            alert("Sorry! You'll need to create a Constitution for " + state + " first!");
         }
-        initOpts()
 
-        //create new autocomplete
-        //reinitializes on every change of the options provided
-        var newAutocomplete = function() {
-          scope.gPlace = new google.maps.places.Autocomplete(element[0], opts);
-          google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
-            scope.$apply(function() {
-//              if (scope.details) {
-                scope.details = scope.gPlace.getPlace();
-//              }
-              scope.ngAutocomplete = element.val();
+        // ******************************
+        // Internal methods
+        // ******************************
+
+        /**
+         * Search for states... use $timeout to simulate
+         * remote dataservice call.
+         */
+        function querySearch(query) {
+            var results = query ? self.states.filter(createFilterFor(query)) : self.states,
+                deferred;
+            if (self.simulateQuery) {
+                deferred = $q.defer();
+                $timeout(function () { deferred.resolve(results); }, Math.random() * 1000, false);
+                return deferred.promise;
+            } else {
+                return results;
+            }
+        }
+
+        function searchTextChange(text) {
+            $log.info('Text changed to ' + text);
+        }
+
+        function selectedItemChange(item) {
+            $log.info('Item changed to ' + JSON.stringify(item));
+        }
+
+        /**
+         * Build `states` list of key/value pairs
+         */
+        function loadAll() {
+            var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
+              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
+              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
+              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
+              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
+              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
+              Wisconsin, Wyoming';
+
+            return allStates.split(/, +/g).map(function (state) {
+                return {
+                    value: state.toLowerCase(),
+                    display: state
+                };
             });
-          })
         }
-        newAutocomplete()
 
-        //watch options provided to directive
-        scope.watchOptions = function () {
-          return scope.options
-        };
-        scope.$watch(scope.watchOptions, function () {
-          initOpts()
-          newAutocomplete()
-          element[0].value = '';
-          scope.ngAutocomplete = element.val();
-        }, true);
-      }
-    };
-  });
+        /**
+         * Create filter function for a query string
+         */
+        function createFilterFor(query) {
+            var lowercaseQuery = angular.lowercase(query);
+
+            return function filterFn(state) {
+                return (state.value.indexOf(lowercaseQuery) === 0);
+            };
+
+        }
+    }
+})();

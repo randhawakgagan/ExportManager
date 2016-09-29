@@ -22,79 +22,93 @@
         @Html.AntiForgeryToken()
 
         <div id="item_data">
-            <h4>Item Add</h4>
+            <h4> License Item </h4>
             <hr />
+            <div class="panel panel-info">
+                <div class="panel-heading">Add Item</div>
+                <div class="panel-body">
+                    <div class="form-inline">
 
-            <div class="form-inline">
-
-                <div class="form-group">
-                    <label>Choose Item</label>
-                    
+                        <div class="form-group">
+                            <label>Choose Item</label>
 
 
 
-                        @Html.DropDownListFor(x => x.SelectedItems, Model.Items, "select")
 
-                    
+                            @Html.DropDownListFor(x => x.SelectedItems, Model.Items, "select")
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+
+                                No.Units
+
+                            </label>
+
+                            @Html.EditorFor(model => model.No_Units)
+                            @Html.ValidationMessageFor(model => model.No_Units, "")
+
+                        </div>
+                        <div class="form-group">
+                            <label></label>
+
+                            <button type="submit" id="itm_add" class="btn btn-success">Add/Update Item</button>
+
+                        </div>
+
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label>
-
-                        No.Units
-
-                    </label>
-                    
-                        @Html.EditorFor(model => model.No_Units)
-                        @Html.ValidationMessageFor(model => model.No_Units, "")
-                    
-                </div>
-                <div class="form-group">
-                     <label></label> 
-                    
-                        <button type="submit"  id="itm_add" class="btn btn-success">Add/Update Item</button>
-                    
-                </div>
-
             </div>
-            </div>
+        </div>
 
         if (Model.Itms_db != null)
         {
             <h4>Added Items</h4>
             <hr />
-            <table class="table table-bordered table-hover" >
-                <tr>
-                   
-                    <th>Item_Name</th>
-                    <th>No_Units</th>
-                    
-                </tr>
+                <div class="panel panel-info">
+                    <div class="panel-heading"> Items</div>
+                    <div class="panel-body">
+                        <table class="table table-responsive table-hover table-striped">
+                            <tr>
 
-                @foreach (var item in Model.Itms_db)
-                {
-                    string selectedRow = "";
-                 
+                                <th>Item_Name</th>
+                                <th>No_Units</th>
+
+                            </tr>
+
+                            @foreach (var item in Model.Itms_db)
+                    {
+                        string selectedRow = "";
+
                         selectedRow = "success";
-                   
-                    <tr class="@selectedRow">
-                        
-                        <td>
-                            @item.Itm_names
-                        </td>
-                        <td>
-                            @item.Itm_No_Units
-                        </td>
-                        
-                    </tr>
-                }
 
-            </table>
-        }
-    }
+                                <tr class="@selectedRow">
 
-    <div>
-        @Html.ActionLink("Back to List", "Index","Licenses")
-    </div>
-</body>
+                                    <td>
+                                        @item.Itm_names
+                                    </td>
+                                    <td>
+                                        @item.Itm_No_Units
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </table>
+                        </div>
+                    </div>
+
+                        }
+
+                        }
+
+                        <div>
+                            @Html.ActionLink("Back to List", "Index", "Licenses")
+                        </div>
+            </body>
+
+
+
 </html>

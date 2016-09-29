@@ -4,15 +4,28 @@
 
     var Notifyctrl = function ($scope,$http) {
 
-     
+        $scope.isemail = false;
+        $scope.isdata = false;
         $scope.newemail = [];
         $scope.emails = {};
-       $scope.savedmails = [];
-     //   $scope.mails = [];
+        $scope.savedmails = [];
+        $scope.lic_no = "";
+        $scope.addemails = [];
+        //  $scope.mails = [];
+     
 
         $scope.addemail = function () {
-           // alert($scope.emails.address);
+         //  alert($scope.emails.address);
             $scope.newemail.push({ address: $scope.emails.address });
+       //     $scope.items = $scope.newemail
+       //.map(function (item) {
+       //    return item.address;
+       //})
+       //.join('\n');
+            //     $scope.row = $scope.items.length;
+            $scope.isemail = true;
+           
+            $scope.addemails.push($scope.emails.address);
             $scope.emails = "";
 
         };
@@ -21,21 +34,27 @@
 
       //  var self = this;
     
-        $scope.data = null;
-        $scope.selectedItem = null;
-        $scope.searchText = null;
+        //$scope.data = null;
+        //$scope.selectedItem = null;
+        //$scope.searchText = null;
     
-        $scope.querySearch = function (query) {
-            $http.get("/Notify/GetLicensedata", {search: escape(query)} )
-              .then(function(result) {
-                  $scope.data = result.data.lic_nos;
-                  return result.data.lic_nos;
-              })
-            };
-          //  alert($scope.emails.address);
-        var fun = function () {
+        //$scope.querySearch = function (query) {
 
-            $http.get("/Notify/Emails").then(function (response) {
+        //    $http.get("/Notify/GetLicensedata", {search: escape(query)} )
+        //      .then(function(result) {
+        //          $scope.datalists = result.data.lic_nos;
+        //        //  return result.data.lic_nos;
+        //      })
+        //};
+        //querySearch();
+        //  alert($scope.emails.address);
+      
+        $scope.fun = function () {
+        //    alert($scope.lic_no);
+            $scope.isemail = false;
+            $scope.isdata = false;
+
+            $http.get("/Notify/Emails",  {params: { lic_id: $scope.lic_no }}).then(function (response) {
                 //    alert(response);
                 // angular.copy(response.emails, $scope.savedmails);
 
@@ -44,7 +63,7 @@
                 $scope.mails = response.data.emails;
                // console.log($scope.mails);
                 // alert($scope.mails);
-
+                $scope.isdata = true;
 
 
             }, function () {
@@ -52,7 +71,7 @@
             }
             ).finally(function () { $scope.isBusy = false; });
         };
-        fun();
+       // fun();
             //$scope.newemail.push({ address: $scope.emails.address });
 
             $scope.deleteServeremail =
@@ -61,9 +80,9 @@
                     $scope.isBusy = true;
                   //  alert(Emailid);
                     
-                    $http.post("/Notify/DeleteEmail", {Emailid: Emailid}).then(function (response) {
+                    $http.post("/Notify/DeleteEmail", {email: Emailid,lic_id:$scope.lic_no}).then(function (response) {
                         alert("success");
-                        //fun();
+                        $scope.fun();
                     }, function () {
                         alert("fail");
                     }
@@ -83,11 +102,13 @@
         };
         $scope.savedata = function () {
             $scope.isBusy = true;
-            alert($scope.emails.address);
-            $http.post("/Notify/Save", $scope.newemail).then(function (response)
+            //   alert($scope.emails.address);
+            console.log($scope.newemail);
+
+            $http.post("/Notify/Save", { email: $scope.newemail, lic_id: $scope.lic_no }).then(function (response)
             {
                 alert("success");
-                fun();
+                $scope.fun();
                $scope.newemail=[];
                 $scope.emails = "";
             }, function ()

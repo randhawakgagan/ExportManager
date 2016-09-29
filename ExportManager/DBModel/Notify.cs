@@ -17,5 +17,6 @@ namespace ExportManager.DBModel
         public int Id { get; set; }
         public string Email_Id { get; set; }
         public string UserId { get; set; }
+        public Nullable<int> LicenseId { get; set; }
     }
 }

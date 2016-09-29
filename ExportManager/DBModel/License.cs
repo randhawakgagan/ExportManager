@@ -11,8 +11,7 @@ namespace ExportManager.DBModel
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class License
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,8 +24,6 @@ namespace ExportManager.DBModel
     
         public int Id { get; set; }
         public string License_No { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy - MM - dd}", ApplyFormatInEditMode = true)]
         public System.DateTime Expiry_Date { get; set; }
         public string Notes { get; set; }
         public string UserId { get; set; }

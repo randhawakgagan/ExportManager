@@ -136,6 +136,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Email_Id" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="UserId" Type="nvarchar(max)" />
+    <Property Name="LicenseId" Type="int" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>

@@ -29,53 +29,46 @@
     {
 
         <div id="item_data">
-            <h4>Item Add</h4>
+            <h4>Export Item</h4>
             <hr />
 
+            <div class="panel panel-info">
+                <div class="panel-heading">Add Item</div>
+                <div class="panel-body">
+                    <div class="form-inline">
 
-            <div class="form-inline">
+                        <div class="form-group">
+                            <label>Select Item</label>
+                            @Html.DropDownListFor(s => s.SelectedItems, Model.Items, "Select")
+                        </div>
+                        <div class="form-group">
 
-                <div class="form-group">
-                    <label >Select Item</label>
-                    @Html.DropDownListFor(s => s.SelectedItems, Model.Items, "Select")
-                </div>
-                <div class="form-group">
+                        </div>
+                        <div class="form-group">
 
-                </div>
-                <div class="form-group">
-
-                </div>
-                <div class="form-group">
-                    <label >Enter Units</label>
-                   @Html.EditorFor(s=>s.No_Of_Units)
-                </div>
-
-               
-                <div class="form-group">
+                        </div>
+                        <div class="form-group">
+                            <label>Enter Units</label>
+                            @Html.EditorFor(s => s.No_Of_Units)
+                        </div>
 
 
-                    <input type="submit" value="ADD" id="itm_add" class="btn-success" />
-                    @*  @Html.ActionLink("ADD", "AddExportitem", new { exp_id = Model.exp_id, lic_id = Model.lic_id })*@
+                        <div class="form-group">
 
+
+                            <input type="submit" value="ADD" id="itm_add" class="btn-success" />
+                            @*  @Html.ActionLink("ADD", "AddExportitem", new { exp_id = Model.exp_id, lic_id = Model.lic_id })*@
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div>
 
 
-        </div>
 
 
-        <div>
-
-
-        </div>
-
-        <div>
-
-
-        </div>
         if (Model.msg != null)
         {
             <div class="container">
@@ -85,54 +78,58 @@
 
         if (Model.exp_item != null)
         {
-        <h5>Added Items</h5>
-        <hr />
-        <table class="table table-hover table-striped table-responsive" >
-            <tr>
-                
-                <th class="danger">Item_Name</th>
-                <th class="warning">No_Units</th>
-                <th class="danger">Unit Value</th>
-                
+            <h4>Added Items</h4>
+                    <hr />
+                    <div class="panel panel-info">
+                        <div class="panel-heading"> Items</div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-striped table-responsive">
+                                <tr>
 
-            </tr>
+                                    <th >Item_Name</th>
+                                    <th >No_Units</th>
+                                    <th >Unit Value</th>
 
-            @foreach (var item in Model.exp_item)
-            {
-                
-                foreach (var exp_item in item.Export_Item)
-                {
-                    <tr>
-                        <td>
-                            @exp_item.Item.Name
 
-                        </td>
+                                </tr>
 
-                        <td>
-                           @*@Html.EditorFor(m =>m.No_Of_Units, new { htmlAttributes = new {id="no_units" } })*@
-                         
-                               @exp_item.No_Of_Units
+                                @foreach (var item in Model.exp_item)
+                                {
 
-                        </td>
-                        <td>
-                            @exp_item.Item.Unit_Value
+                                    foreach (var exp_item in item.Export_Item)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @exp_item.Item.Name
 
-                        </td>
-                        @*<td>
+                                            </td>
 
-        @Html.ActionLink("Update", "UpdateExportitem", new {item_id=exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id },new { id="update"})
-    </td>
-    <td>
-        @Html.ActionLink("Delete", "DeleteExportitem", new {exp_item_id=exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id })
-    </td>*@
-                    </tr>
-                }
-            }
+                                            <td>
+                                                @*@Html.EditorFor(m =>m.No_Of_Units, new { htmlAttributes = new {id="no_units" } })*@
 
-        </table>
+                                                @exp_item.No_Of_Units
 
-    }
+                                            </td>
+                                            <td>
+                                                @exp_item.Item.Unit_Value
 
-    }
-</body>
+                                            </td>
+                                            @*<td>
+
+                                                    @Html.ActionLink("Update", "UpdateExportitem", new {item_id=exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id },new { id="update"})
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Delete", "DeleteExportitem", new {exp_item_id=exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id })
+                                                </td>*@
+                                        </tr>
+                                    }
+                                }
+
+                            </table>
+                            </div>
+                        </div>
+                            }
+
+                            }
+                </body>
 </html>              

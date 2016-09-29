@@ -17,86 +17,90 @@
     <title>Create</title>
 </head>
 <body>
-  
+
 
     @using (Html.BeginForm("Create", "LicenseAdd"))
     {
         @Html.AntiForgeryToken()
 
-       
-            <h4>License</h4>
+
+        <h4>License</h4>
             <hr />
 
-
-            <div class="form-horizontal">
-                <div class="table">
-                    <div class="form-group">
-
-
-                        @Html.Label("Choose Countries", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-
-                            @*@Html.DropDownListFor(m => m.Id, (SelectList)ViewBag.Country_list, " ", new { @class = "form-control" })
-                                @Html.DropDownListFor(m => m.Id, (MultiSelectList)ViewBag.Country_list, " ", new { @class = "form-control" })
+            <div class="panel panel-info">
+                <div class="panel-heading">Add License</div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="table">
+                            <div class="form-group">
 
 
+                                @Html.Label("Choose Countries", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
 
-                                 @Html.DropDownListFor(m => m.Id, (MultiSelectList)ViewBag.Country_list, " ", new {multiple = "multiple" })*@
+                                    @*@Html.DropDownListFor(m => m.Id, (SelectList)ViewBag.Country_list, " ", new { @class = "form-control" })
+                                        @Html.DropDownListFor(m => m.Id, (MultiSelectList)ViewBag.Country_list, " ", new { @class = "form-control" })
 
-                            @Html.ListBoxFor(x => x.SelectedCountries, Model.Counties)
 
+
+                                         @Html.DropDownListFor(m => m.Id, (MultiSelectList)ViewBag.Country_list, " ", new {multiple = "multiple" })*@
+
+                                    @Html.ListBoxFor(x => x.SelectedCountries, Model.Counties)
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.License_No, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.License_No, new { htmlAttributes = new { @class = "form-control", id = "lic_val1" } })
+                                    @Html.ValidationMessageFor(model => model.License_No, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Expiry_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+
+
+
+                                    @Html.EditorFor(model => model.Expiry_Date, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                                    @Html.ValidationMessageFor(model => model.Expiry_Date, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+
+
+                                    <input type="submit" value="Add item" id="lic_create" class="btn btn-primary" />
+                                </div>
+                            </div>
+                            <div id="data_lic"> </div>
                         </div>
                     </div>
-
-
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.License_No, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.License_No, new { htmlAttributes = new { @class = "form-control", id = "lic_val1" } })
-                            @Html.ValidationMessageFor(model => model.License_No, "", new { @class = "text-danger" })
-                        </div>
                     </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Expiry_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-
-
-
-                            @Html.EditorFor(model => model.Expiry_Date, new { htmlAttributes = new { @class = "form-control" } })
-
-
-                            @Html.ValidationMessageFor(model => model.Expiry_Date, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-
-
-                            <input type="submit" value="Add item" id="lic_create" class="btn btn-primary" />
-                        </div>
-                    </div>
-                    <div id="data_lic"> </div>
                 </div>
-            </div>
 
-    }
-
+                    }
 
 
-    <div>
-        @Html.ActionLink("Back to List", "Index","Licenses")
-    </div>
-</body>
+
+                    <div>
+                        @Html.ActionLink("Back to List", "Index", "Licenses")
+                    </div>
+        </body>
 </html>

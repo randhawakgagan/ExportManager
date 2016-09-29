@@ -25,28 +25,30 @@
 
 
 
-    
-
-        @if (Model.exp_country != null)
-        {
 
 
-            <h4 class="alert-info">Counties Added</h4>
-          
-            <table class="table table-responsive table-striped table-hover" id="itemtable">
-                <thead>
+    @if (Model.exp_country != null)
+    {
 
-                    <tr>
+        <div class="panel panel-info">
+            <div class="panel-heading">Counties Added</div>
+            <div class="panel-body">
+              
 
-                        <th >Country_Name</th>
+                <table class="table table-responsive table-striped table-hover" id="itemtable">
+                    <thead>
 
-                        <th><a class="btn" onclick="deletecountry('@Model.exp_country.First().Id')">Delete </a></th>
+                        <tr>
+
+                            <th>Country_Name</th>
+
+                            <th><a class="btn" onclick="deletecountry('@Model.exp_country.First().Id')">Delete </a></th>
 
 
-                    </tr>
-                </thead>
-                <tbody id="contacts">
-                    @foreach (var item in Model.exp_country)
+                        </tr>
+                    </thead>
+                    <tbody id="contacts">
+                        @foreach (var item in Model.exp_country)
                 {
 
 
@@ -54,34 +56,35 @@
                     foreach (var c_item in item.Export_Country)
                     {
 
-                            <tr>
-                                <td>
-                                    @c_item.Country.Name
+                                <tr>
+                                    <td>
+                                        @c_item.Country.Name
 
-                                </td>
-
-
-                                @*<td>
-
-                                      @Html.ActionLink("Update", "UpdateExportitem", new { item_id = exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id }, new { id = "update" })
                                     </td>
-                                *@
-                                <td>
-                                    <input type="checkbox" value="@c_item.Id" class="chcekc" />
 
-                                    @*@Html.ActionLink("Delete", "DeleteExportitem", new { exp_item_id = exp_item.Id })*@
-                                </td>
 
-                            </tr>
+                                    @*<td>
+
+                                          @Html.ActionLink("Update", "UpdateExportitem", new { item_id = exp_item.Item_Id, exp_item_id = exp_item.Id, exp_id = Model.exp_id, lic_id = Model.lic_id }, new { id = "update" })
+                                        </td>
+                                    *@
+                                    <td>
+                                        <input type="checkbox" value="@c_item.Id" class="chcekc" />
+
+                                        @*@Html.ActionLink("Delete", "DeleteExportitem", new { exp_item_id = exp_item.Id })*@
+                                    </td>
+
+                                </tr>
+                            }
+
+
                         }
+                    </tbody>
+                </table>
+                </div>
+            </div>
+                }
 
-
-                    }
-                </tbody>
-            </table>
-
-        }
-            
-</body>
+    </body>
 </html>
 

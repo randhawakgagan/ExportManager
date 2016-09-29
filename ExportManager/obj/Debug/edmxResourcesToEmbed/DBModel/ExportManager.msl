@@ -135,6 +135,7 @@
     <EntitySetMapping Name="Notifies">
       <EntityTypeMapping TypeName="LicenseManagerModel.Notify">
         <MappingFragment StoreEntitySet="Notify">
+          <ScalarProperty Name="LicenseId" ColumnName="LicenseId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
